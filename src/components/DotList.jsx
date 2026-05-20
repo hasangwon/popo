@@ -1,9 +1,9 @@
 const DotList = ({ items, tone = "default" }) => (
-  <ul className="mt-3 space-y-2">
+  <ul className="mt-3 list-disc space-y-2 pl-5 marker:text-sky-600">
     {items.map((item) => (
       <li
         key={item}
-        className={`relative pl-4 text-[0.9rem] leading-6 before:absolute before:left-0 before:text-sky-600 before:content-['•'] ${
+        className={`text-[0.9rem] leading-6 ${
           tone === "fill" ? "font-semibold text-sky-800" : "text-slate-700"
         }`}
       >

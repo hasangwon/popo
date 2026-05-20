@@ -3,7 +3,7 @@ import PortfolioSection from "../components/PortfolioSection";
 import ProjectAccordion from "../components/ProjectAccordion";
 
 const ProjectListSection = ({ active, projects, registerSection, section, title }) => {
-  const [openId, setOpenId] = useState(projects[0]?.title ?? "");
+  const [openId, setOpenId] = useState("");
 
   return (
     <PortfolioSection
@@ -18,7 +18,9 @@ const ProjectListSection = ({ active, projects, registerSection, section, title 
           <ProjectAccordion
             key={project.title}
             isOpen={openId === project.title}
-            onToggle={() => setOpenId(project.title)}
+            onToggle={() => {
+              setOpenId((currentId) => (currentId === project.title ? "" : project.title));
+            }}
             project={project}
           />
         ))}

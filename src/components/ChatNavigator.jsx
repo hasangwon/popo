@@ -20,12 +20,10 @@ const ChatNavigator = ({
   return (
     <aside className="hidden h-full w-[23%] min-w-[300px] flex-col border-r border-slate-200 bg-white lg:flex">
       <div className="border-b border-slate-100 bg-[#fafafa] p-5">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-400">
+        <h1 className="text-lg font-black text-slate-950">하상원</h1>
+        <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-slate-400">
           Portfolio Assistant
         </p>
-        <h1 className="mt-1 text-sm font-black text-sky-700">
-          하상원 포커스 네비게이터
-        </h1>
       </div>
 
       <div

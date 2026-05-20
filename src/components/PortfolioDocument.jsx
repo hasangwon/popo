@@ -1,55 +1,55 @@
-import GentlepieSection from "../sections/GentlepieSection";
-import NextDraftSection from "../sections/NextDraftSection";
+import ContactSection from "../sections/ContactSection";
+import ExperienceSection from "../sections/ExperienceSection";
+import HeroSection from "../sections/HeroSection";
+import OverviewSection from "../sections/OverviewSection";
 import ProjectListSection from "../sections/ProjectListSection";
-import SummarySection from "../sections/SummarySection";
-import VetfluxSection from "../sections/VetfluxSection";
 import { projects } from "../portfolioData";
 
 const PortfolioDocument = ({ activeId, registerSection, scrollRef, sections }) => {
   const sectionMap = Object.fromEntries(sections.map((section) => [section.id, section]));
   const chatbotProjects = projects.filter((project) => project.group === "chatbot");
-  const documentProjects = projects.filter((project) => project.group === "document");
+  const generalProjects = projects.filter((project) => project.group !== "chatbot");
 
   return (
     <div
       ref={scrollRef}
       data-scroll-pane="main"
-      className="h-full w-full min-w-0 overflow-y-auto overflow-x-hidden px-4 py-6 scroll-smooth sm:px-6 lg:w-[77%] lg:p-16"
+      className="h-full w-full min-w-0 overflow-y-auto overflow-x-hidden bg-slate-100 p-0 scroll-smooth sm:px-5 sm:py-5 lg:w-[77%] lg:p-8 xl:p-10"
     >
-      <div className="mx-auto grid w-full min-w-0 max-w-[960px] gap-8 overflow-x-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.04)] sm:p-8 lg:p-12">
-        <SummarySection
-          active={activeId === "summary"}
+      <div className="mx-auto grid w-full min-w-0 max-w-full gap-6 overflow-x-hidden p-4 sm:max-w-[1160px] sm:p-0">
+        <HeroSection
+          active={activeId === "hero"}
           registerSection={registerSection}
-          section={sectionMap.summary}
+          section={sectionMap.hero}
         />
-        <GentlepieSection
-          active={activeId === "gentlepie"}
+        <OverviewSection
+          active={activeId === "overview"}
           registerSection={registerSection}
-          section={sectionMap.gentlepie}
+          section={sectionMap.overview}
+        />
+        <ExperienceSection
+          active={activeId === "experience"}
+          registerSection={registerSection}
+          section={sectionMap.experience}
         />
         <ProjectListSection
           active={activeId === "chatbot-projects"}
           projects={chatbotProjects}
           registerSection={registerSection}
           section={sectionMap["chatbot-projects"]}
-          title="03. Chatbot Project Deep Dives"
+          title="04. Chatbot Projects"
         />
         <ProjectListSection
-          active={activeId === "document-addon"}
-          projects={documentProjects}
+          active={activeId === "general-projects"}
+          projects={generalProjects}
           registerSection={registerSection}
-          section={sectionMap["document-addon"]}
-          title="04. Document Add-on / Complex Integration"
+          section={sectionMap["general-projects"]}
+          title="05. General Projects"
         />
-        <VetfluxSection
-          active={activeId === "vetflux"}
+        <ContactSection
+          active={activeId === "contact"}
           registerSection={registerSection}
-          section={sectionMap.vetflux}
-        />
-        <NextDraftSection
-          active={activeId === "next"}
-          registerSection={registerSection}
-          section={sectionMap.next}
+          section={sectionMap.contact}
         />
       </div>
     </div>

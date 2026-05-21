@@ -28,7 +28,7 @@ const ChatNavigator = ({
 
       <div
         ref={logRef}
-        className="flex-1 space-y-3 overflow-y-auto border-b border-slate-100 p-4 text-[0.8rem]"
+        className="flex-1 space-y-3 overflow-y-auto border-b scrollbar-hidden border-slate-100 p-4 text-[0.8rem]"
       >
         {messages.map((message) => (
           <div
@@ -39,7 +39,18 @@ const ChatNavigator = ({
                 : "ml-auto bg-sky-100 font-bold text-sky-800"
             }`}
           >
-            {message.text}
+            {message.isLoading ? (
+              <span className="flex items-center gap-2">
+                <span>{message.text}</span>
+                <span className="flex items-center gap-1" aria-hidden="true">
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:120ms]" />
+                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-slate-400 [animation-delay:240ms]" />
+                </span>
+              </span>
+            ) : (
+              message.text
+            )}
           </div>
         ))}
       </div>

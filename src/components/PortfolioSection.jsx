@@ -2,7 +2,7 @@ const PortfolioSection = ({ active, children, id, registerSection, section, titl
   <section
     id={id}
     ref={(node) => registerSection(id, node)}
-    className={`w-full min-w-0 scroll-mt-6 overflow-x-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.04)] transition-colors duration-300 sm:p-6 lg:p-8 ${
+    className={`w-full max-w-[calc(100vw-2rem)] min-w-0 scroll-mt-6 overflow-x-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.04)] transition-colors duration-300 sm:max-w-none sm:p-6 lg:p-8 ${
       active ? "border-l-[5px] border-l-sky-600" : "border-l-[5px] border-l-transparent"
     }`}
   >

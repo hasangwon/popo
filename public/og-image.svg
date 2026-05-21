@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">하상원 프론트엔드 개발자 포트폴리오</title>
+  <desc id="desc">Frontend Developer Portfolio by Hasangwon Ha</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="56%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#075985" />
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="18%" r="65%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.42" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#glow)" />
+  <rect x="100" y="110" width="1000" height="410" rx="34" fill="#e0f2fe" opacity="0.11" stroke="#7dd3fc" stroke-opacity="0.26" />
+  <text x="600" y="300" fill="#ffffff" text-anchor="middle" font-family="Apple SD Gothic Neo, AppleGothic, Arial, sans-serif" font-size="70" font-weight="900">하상원 포트폴리오</text>
+  <text x="600" y="370" fill="#bae6fd" text-anchor="middle" font-family="Apple SD Gothic Neo, AppleGothic, Arial, sans-serif" font-size="34" font-weight="800">Frontend Developer</text>
+</svg>

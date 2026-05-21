@@ -67,3 +67,13 @@
     transform: translateX(-50%);
   }
 }
+
+/* 스크롤바 숨김 */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Chrome / Safari / Edge */
+}

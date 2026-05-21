@@ -12,9 +12,12 @@ const initialMessages = [
   {
     id: "intro-2",
     from: "assistant",
-    text: "약 4년 3개월 동안 챗봇, SaaS 운영 도구, 앱/WebView 환경의 프론트엔드 개발을 경험했습니다.",
+    text: "약 4년 3개월 동안 챗봇, SaaS 운영 도구, 앱/WebView 환경을 중심으로 프론트엔드 개발을 해왔습니다.",
   },
 ];
+
+const getNavigationAnswer = (section) =>
+  `${section.index}. ${section.label} 섹션으로 이동했습니다.`;
 
 const App = () => {
   const [activeId, setActiveId] = useState(sections[0].id);
@@ -25,6 +28,7 @@ const App = () => {
   const sectionRefs = useRef({});
   const frameRef = useRef(null);
   const navigationTargetRef = useRef("");
+  const pendingMessageRef = useRef(null);
   const unlockTimerRef = useRef(null);
   const sectionMap = useMemo(
     () => Object.fromEntries(sections.map((section) => [section.id, section])),
@@ -36,6 +40,23 @@ const App = () => {
       return;
     }
 
+    const pendingMessage = pendingMessageRef.current;
+    if (pendingMessage?.targetId === targetId) {
+      const section = sectionMap[targetId];
+      setMessages((prev) =>
+        prev.map((message) =>
+          message.id === pendingMessage.id
+            ? {
+                ...message,
+                text: getNavigationAnswer(section),
+                isLoading: false,
+              }
+            : message,
+        ),
+      );
+      pendingMessageRef.current = null;
+    }
+
     navigationTargetRef.current = "";
     setNavigatingTargetId("");
     setIsNavigating(false);
@@ -44,7 +65,7 @@ const App = () => {
       clearTimeout(unlockTimerRef.current);
       unlockTimerRef.current = null;
     }
-  }, []);
+  }, [sectionMap]);
 
   const updateActiveFromScroll = useCallback(() => {
     const pane = scrollRef.current;
@@ -104,17 +125,25 @@ const App = () => {
       setNavigatingTargetId(id);
       setIsNavigating(true);
 
+      const messageKey = `${id}-${Date.now()}`;
+      const pendingAssistantId = `assistant-${messageKey}`;
+      pendingMessageRef.current = {
+        id: pendingAssistantId,
+        targetId: id,
+      };
+
       setMessages((prev) => [
         ...prev,
         {
-          id: `recruiter-${id}-${prev.length}`,
+          id: `recruiter-${messageKey}`,
           from: "recruiter",
           text: section.prompt,
         },
         {
-          id: `assistant-${id}-${prev.length}`,
+          id: pendingAssistantId,
           from: "assistant",
-          text: `${section.index}. ${section.label} 섹션으로 이동했습니다. 우측 문서에서 선택 영역을 확인해 주세요.`,
+          text: "이동 중입니다.",
+          isLoading: true,
         },
       ]);
 

@@ -13,7 +13,6 @@ const coreTags = [
   "Firebase",
   "SSE",
   "WebSocket",
-  "HwpObject API",
 ];
 
 const bannerItems = ["CHATBOT", "WEBVIEW", "SAAS", "SDK", "ADD-ON", "REALTIME"];
@@ -45,16 +44,16 @@ const scrollToProject = (projectId) => {
 };
 
 const FlowBanner = () => (
-  <div className="w-full rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 sm:p-5">
+  <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 sm:p-5">
     <div className="mb-4 flex items-center justify-between gap-3">
       <span className="text-sm font-black text-slate-700">대표 프로젝트</span>
     </div>
     <div className="grid gap-3 sm:grid-cols-3">
       {featuredProjects.map((project) => (
-        <a
+        <button
           key={project.id}
-          className="block min-h-28 rounded-lg border border-sky-100 bg-white/80 p-4 no-underline transition hover:border-sky-500 hover:bg-white focus-visible:border-sky-500 focus-visible:bg-white focus-visible:outline-none"
-          href={`#project-${project.id}`}
+          type="button"
+          className="block min-h-28 min-w-0 rounded-lg border border-sky-100 bg-white/80 p-4 text-left no-underline transition hover:border-sky-500 hover:bg-white focus-visible:border-sky-500 focus-visible:bg-white focus-visible:outline-none"
           onClick={() => scrollToProject(project.id)}
         >
           <span className="text-xs font-black text-sky-600">
@@ -66,7 +65,7 @@ const FlowBanner = () => (
           <p className="mt-3 text-[0.82rem] font-bold leading-6 text-slate-600">
             {project.desc}
           </p>
-        </a>
+        </button>
       ))}
     </div>
   </div>
@@ -92,7 +91,7 @@ const HeroSection = ({ active, registerSection, section }) => (
           </span>
         </div>
 
-        <p className="mt-5 max-w-4xl break-words text-[0.98rem] font-medium leading-8 text-slate-700">
+        <p className="mt-5 max-w-full break-words text-[0.98rem] font-medium leading-8 text-slate-700">
           {profile.summary}
         </p>
         <div className="mt-5">

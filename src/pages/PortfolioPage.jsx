@@ -1,14 +1,30 @@
-import ContactSection from "../sections/ContactSection";
-import ExperienceSection from "../sections/ExperienceSection";
-import HeroSection from "../sections/HeroSection";
-import OverviewSection from "../sections/OverviewSection";
-import ProjectListSection from "../sections/ProjectListSection";
-import { projects } from "../portfolioData";
+import { useState } from "react";
+import ContactSection from "../components/portfolio/ContactSection";
+import ExperienceSection from "../components/portfolio/ExperienceSection";
+import HeroSection from "../components/portfolio/HeroSection";
+import OverviewSection from "../components/portfolio/OverviewSection";
+import ProjectListSection from "../components/portfolio/ProjectListSection";
+import { projects } from "../constants/portfolioData";
 
-const PortfolioDocument = ({ activeId, registerSection, scrollRef, sections }) => {
-  const sectionMap = Object.fromEntries(sections.map((section) => [section.id, section]));
-  const chatbotProjects = projects.filter((project) => project.group === "chatbot");
-  const generalProjects = projects.filter((project) => project.group !== "chatbot");
+const PortfolioPage = ({ activeId, registerSection, scrollRef, sections }) => {
+  const [openProjectId, setOpenProjectId] = useState("");
+  const sectionMap = Object.fromEntries(
+    sections.map((section) => [section.id, section]),
+  );
+  const chatbotProjects = projects.filter(
+    (project) => project.group === "chatbot",
+  );
+  const generalProjects = projects.filter(
+    (project) => project.group !== "chatbot",
+  );
+
+  const openProject = (projectId) => {
+    setOpenProjectId(projectId);
+    requestAnimationFrame(() => {
+      const target = document.getElementById(`project-${projectId}`);
+      target?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   return (
     <div
@@ -19,6 +35,7 @@ const PortfolioDocument = ({ activeId, registerSection, scrollRef, sections }) =
       <div className="mx-auto grid w-full min-w-0 max-w-full gap-6 overflow-x-hidden p-4 sm:max-w-[1160px] sm:p-0">
         <HeroSection
           active={activeId === "hero"}
+          onProjectSelect={openProject}
           registerSection={registerSection}
           section={sectionMap.hero}
         />
@@ -34,17 +51,21 @@ const PortfolioDocument = ({ activeId, registerSection, scrollRef, sections }) =
         />
         <ProjectListSection
           active={activeId === "chatbot-projects"}
+          openProjectId={openProjectId}
           projects={chatbotProjects}
           registerSection={registerSection}
           section={sectionMap["chatbot-projects"]}
-          title="04. Chatbot Projects"
+          setOpenProjectId={setOpenProjectId}
+          title="04. 챗봇 프로젝트"
         />
         <ProjectListSection
           active={activeId === "general-projects"}
+          openProjectId={openProjectId}
           projects={generalProjects}
           registerSection={registerSection}
           section={sectionMap["general-projects"]}
-          title="05. General Projects"
+          setOpenProjectId={setOpenProjectId}
+          title="05. 일반 프로젝트"
         />
         <ContactSection
           active={activeId === "contact"}
@@ -56,4 +77,4 @@ const PortfolioDocument = ({ activeId, registerSection, scrollRef, sections }) =
   );
 };
 
-export default PortfolioDocument;
+export default PortfolioPage;

@@ -1,23 +1,36 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import ChatNavigator from "./components/ChatNavigator";
-import PortfolioDocument from "./components/PortfolioDocument";
-import { sections } from "./portfolioData";
+import ChatNavigator from "./components/portfolio/ChatNavigator";
+import { sections } from "./constants/portfolioData";
+import HomePage from "./pages/HomePage";
+import PortfolioPage from "./pages/PortfolioPage";
+import ResumePage from "./pages/ResumePage";
 
 const initialMessages = [
   {
     id: "intro-1",
     from: "assistant",
-    text: "단순한 기능 구현을 넘어 기획 의도를 이해하고, 사용자가 실제로 필요로 하는 지점을 서비스에 반영하는 과정을 중요하게 생각합니다.",
+    text: "하상원 포트폴리오입니다.",
   },
   {
     id: "intro-2",
     from: "assistant",
-    text: "약 4년 3개월 동안 챗봇, SaaS 운영 도구, 앱/WebView 환경을 중심으로 프론트엔드 개발을 해왔습니다.",
+    text: "경력, 프로젝트, 결과물을 섹션별로 확인할 수 있습니다.",
   },
 ];
 
 const getNavigationAnswer = (section) =>
   `${section.index}. ${section.label} 섹션으로 이동했습니다.`;
+
+const getCurrentPath = () => {
+  const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const normalizedPath = window.location.pathname.replace(/\/$/, "");
+
+  if (basePath && normalizedPath.startsWith(basePath)) {
+    return normalizedPath.slice(basePath.length) || "/";
+  }
+
+  return normalizedPath || "/";
+};
 
 const App = () => {
   const [activeId, setActiveId] = useState(sections[0].id);
@@ -35,37 +48,44 @@ const App = () => {
     [],
   );
 
-  const unlockNavigation = useCallback((targetId = navigationTargetRef.current) => {
-    if (targetId && navigationTargetRef.current && navigationTargetRef.current !== targetId) {
-      return;
-    }
+  const unlockNavigation = useCallback(
+    (targetId = navigationTargetRef.current) => {
+      if (
+        targetId &&
+        navigationTargetRef.current &&
+        navigationTargetRef.current !== targetId
+      ) {
+        return;
+      }
 
-    const pendingMessage = pendingMessageRef.current;
-    if (pendingMessage?.targetId === targetId) {
-      const section = sectionMap[targetId];
-      setMessages((prev) =>
-        prev.map((message) =>
-          message.id === pendingMessage.id
-            ? {
-                ...message,
-                text: getNavigationAnswer(section),
-                isLoading: false,
-              }
-            : message,
-        ),
-      );
-      pendingMessageRef.current = null;
-    }
+      const pendingMessage = pendingMessageRef.current;
+      if (pendingMessage?.targetId === targetId) {
+        const section = sectionMap[targetId];
+        setMessages((prev) =>
+          prev.map((message) =>
+            message.id === pendingMessage.id
+              ? {
+                  ...message,
+                  text: getNavigationAnswer(section),
+                  isLoading: false,
+                }
+              : message,
+          ),
+        );
+        pendingMessageRef.current = null;
+      }
 
-    navigationTargetRef.current = "";
-    setNavigatingTargetId("");
-    setIsNavigating(false);
+      navigationTargetRef.current = "";
+      setNavigatingTargetId("");
+      setIsNavigating(false);
 
-    if (unlockTimerRef.current) {
-      clearTimeout(unlockTimerRef.current);
-      unlockTimerRef.current = null;
-    }
-  }, [sectionMap]);
+      if (unlockTimerRef.current) {
+        clearTimeout(unlockTimerRef.current);
+        unlockTimerRef.current = null;
+      }
+    },
+    [sectionMap],
+  );
 
   const updateActiveFromScroll = useCallback(() => {
     const pane = scrollRef.current;
@@ -94,8 +114,11 @@ const App = () => {
       }
     });
 
-    const nearBottom = pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8;
-    const resolvedActiveId = nearBottom ? sections[sections.length - 1].id : nextActiveId;
+    const nearBottom =
+      pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8;
+    const resolvedActiveId = nearBottom
+      ? sections[sections.length - 1].id
+      : nextActiveId;
 
     setActiveId(resolvedActiveId);
 
@@ -194,6 +217,16 @@ const App = () => {
     };
   }, [updateActiveFromScroll]);
 
+  const currentPath = getCurrentPath();
+
+  if (currentPath === "/resume") {
+    return <ResumePage />;
+  }
+
+  if (currentPath !== "/portfolio") {
+    return <HomePage />;
+  }
+
   return (
     <main className="h-[100dvh] w-full overflow-hidden bg-[#f4f6f9] text-slate-800 lg:flex">
       <ChatNavigator
@@ -204,7 +237,7 @@ const App = () => {
         onSelect={selectSection}
         sections={sections}
       />
-      <PortfolioDocument
+      <PortfolioPage
         activeId={activeId}
         registerSection={registerSection}
         scrollRef={scrollRef}

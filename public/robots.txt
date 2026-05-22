@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hasangwon.github.io/portfolio-chatbot/sitemap.xml
+Sitemap: https://hasangwon.com/sitemap.xml

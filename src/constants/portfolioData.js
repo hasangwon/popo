@@ -2,7 +2,7 @@ export const profile = {
   name: "하상원",
   role: "Frontend Developer",
   summary:
-    "단순한 기능 구현을 넘어 기획 의도를 이해하고, 변화 속에서도 흐름을 지켜내며, 사용자가 실제로 필요로 하는 지점을 서비스에 반영하는 프론트엔드 개발자입니다.",
+    "관리자용 웹 서비스와 대화형 UI 중심의 프론트엔드 개발 이력을 정리했습니다.",
   email: "305243@naver.com",
   github: "https://github.com/hasangwon",
   blog: "https://bitcoins.tistory.com/",
@@ -118,6 +118,7 @@ export const companies = [
 
 export const projects = [
   {
+    id: "seolhaewon-chatbot",
     group: "chatbot",
     title: "설해원 챗봇",
     period: "2026.02 ~ 2026.05",
@@ -194,6 +195,7 @@ export const projects = [
     ],
   },
   {
+    id: "lg-hvac-chatbot",
     group: "chatbot",
     title: "LG HVAC 챗봇 Philippines",
     period: "2026.01 ~ 2026.03",
@@ -448,6 +450,7 @@ export const projects = [
     ],
   },
   {
+    id: "cosbot",
     group: "chatbot",
     title: "식약처 AI 코스봇",
     period: "2024.07 ~ 2024.08",
@@ -525,6 +528,7 @@ export const projects = [
     ],
   },
   {
+    id: "hancom-editup",
     group: "document",
     title: "한컴오피스 EditUp AI 교열 애드온",
     period: "2025.08 ~ 2026.02",
@@ -591,6 +595,7 @@ export const projects = [
     ],
   },
   {
+    id: "bublitt",
     group: "chatbot",
     title: "버블잇 챗봇 빌더",
     period: "2024.06 ~ 2024.12",
@@ -809,6 +814,7 @@ export const projects = [
     ],
   },
   {
+    id: "daewoongpet",
     group: "vetflux",
     title: "대웅펫 e-CRF",
     period: "2023.11 ~ 2023.12",
@@ -870,11 +876,4 @@ export const projects = [
       },
     ],
   },
-];
-
-export const nextDraftItems = [
-  "대표 프로젝트 2~3개에 실제 화면 캡처 또는 짧은 동작 GIF 추가",
-  "각 프로젝트별 문제 상황, 판단 근거, 구현 방식, 결과를 4단계로 보강",
-  "정량 성과가 있는 항목은 측정 기준과 숫자를 함께 작성",
-  "면접에서 깊게 설명할 수 있는 기술 트러블슈팅 3개 선정",
 ];

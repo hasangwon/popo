@@ -1,6 +1,6 @@
-import PortfolioSection from "../components/PortfolioSection";
-import TagList from "../components/TagList";
-import { profile } from "../portfolioData";
+import TagList from "../common/TagList";
+import { profile } from "../../constants/portfolioData";
+import PortfolioSection from "./PortfolioSection";
 
 const coreTags = [
   "React",
@@ -14,8 +14,6 @@ const coreTags = [
   "SSE",
   "WebSocket",
 ];
-
-const bannerItems = ["CHATBOT", "WEBVIEW", "SAAS", "SDK", "ADD-ON", "REALTIME"];
 
 const featuredProjects = [
   {
@@ -38,12 +36,7 @@ const featuredProjects = [
   },
 ];
 
-const scrollToProject = (projectId) => {
-  const target = document.getElementById(`project-${projectId}`);
-  target?.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
-const FlowBanner = () => (
+const FlowBanner = ({ onProjectSelect }) => (
   <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 sm:p-5">
     <div className="mb-4 flex items-center justify-between gap-3">
       <span className="text-sm font-black text-slate-700">대표 프로젝트</span>
@@ -54,7 +47,7 @@ const FlowBanner = () => (
           key={project.id}
           type="button"
           className="block min-h-28 min-w-0 rounded-lg border border-sky-100 bg-white/80 p-4 text-left no-underline transition hover:border-sky-500 hover:bg-white focus-visible:border-sky-500 focus-visible:bg-white focus-visible:outline-none"
-          onClick={() => scrollToProject(project.id)}
+          onClick={() => onProjectSelect(project.id)}
         >
           <span className="text-xs font-black text-sky-600">
             {project.name}
@@ -71,13 +64,13 @@ const FlowBanner = () => (
   </div>
 );
 
-const HeroSection = ({ active, registerSection, section }) => (
+const HeroSection = ({ active, onProjectSelect, registerSection, section }) => (
   <PortfolioSection
     active={active}
     id={section.id}
     registerSection={registerSection}
     section={section}
-    title="01. Intro"
+    title="01. 소개"
   >
     <div className="mt-5 min-w-0">
       <div className="min-w-0">
@@ -99,7 +92,7 @@ const HeroSection = ({ active, registerSection, section }) => (
         </div>
 
         <div className="mt-8">
-          <FlowBanner />
+          <FlowBanner onProjectSelect={onProjectSelect} />
         </div>
       </div>
     </div>

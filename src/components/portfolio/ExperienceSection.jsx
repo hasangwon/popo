@@ -1,6 +1,6 @@
-import CompanyBlock from "../components/CompanyBlock";
-import PortfolioSection from "../components/PortfolioSection";
-import { companies } from "../portfolioData";
+import { companies } from "../../constants/portfolioData";
+import CompanyBlock from "./CompanyBlock";
+import PortfolioSection from "./PortfolioSection";
 
 const ExperienceSection = ({ active, registerSection, section }) => (
   <PortfolioSection
@@ -8,7 +8,7 @@ const ExperienceSection = ({ active, registerSection, section }) => (
     id={section.id}
     registerSection={registerSection}
     section={section}
-    title="03. Experience"
+    title="03. 경력"
   >
     <div className="mt-5 grid gap-5">
       {companies.map((company) => (

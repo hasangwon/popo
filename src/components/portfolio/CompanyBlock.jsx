@@ -1,5 +1,5 @@
-import DotList from "./DotList";
-import FillBox from "./FillBox";
+import DotList from "../common/DotList";
+import FillBox from "../common/FillBox";
 
 const CompanyBlock = ({ company }) => (
   <article className="mt-5 rounded-md border border-slate-200 bg-slate-50 p-5">

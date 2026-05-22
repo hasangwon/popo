@@ -1,6 +1,6 @@
-import FillBox from "../components/FillBox";
-import PortfolioSection from "../components/PortfolioSection";
-import { strengths } from "../portfolioData";
+import FillBox from "../common/FillBox";
+import { strengths } from "../../constants/portfolioData";
+import PortfolioSection from "./PortfolioSection";
 
 const workPrinciples = [
   {
@@ -27,7 +27,7 @@ const OverviewSection = ({ active, registerSection, section }) => (
     id={section.id}
     registerSection={registerSection}
     section={section}
-    title="02. Working Style"
+    title="02. 작업 방식"
   >
     <div className="mt-5 grid gap-5">
       <div className="rounded-md border border-slate-200 bg-slate-50 p-5">

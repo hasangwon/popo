@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import DotList from "./DotList";
-import MarkdownPreview from "./MarkdownPreview";
-import TagList from "./TagList";
+import DotList from "../common/DotList";
+import MarkdownPreview from "../common/MarkdownPreview";
+import TagList from "../common/TagList";
+
+const getPublicAssetUrl = (src) =>
+  src?.startsWith("/") ? `${import.meta.env.BASE_URL}${src.slice(1)}` : src;
 
 const ProjectInfoBlock = ({ items, title }) => {
   if (!items?.length) return null;
@@ -19,6 +22,8 @@ const ProjectMediaGrid = ({ items }) => {
   const [documentContent, setDocumentContent] = useState("");
   const [documentError, setDocumentError] = useState("");
   const selectedItem = selectedIndex === null ? null : items[selectedIndex];
+  const selectedSrc = getPublicAssetUrl(selectedItem?.src);
+  const selectedDocSrc = getPublicAssetUrl(selectedItem?.docSrc);
   const canMove = items.length > 1;
   const canMovePrev = selectedIndex !== null && selectedIndex > 0;
   const canMoveNext =
@@ -74,13 +79,13 @@ const ProjectMediaGrid = ({ items }) => {
   }, [canMoveNext, canMovePrev, closeItem, moveItem, selectedItem]);
 
   useEffect(() => {
-    if (!selectedItem?.docSrc) {
+    if (!selectedDocSrc) {
       return undefined;
     }
 
     const controller = new AbortController();
 
-    fetch(selectedItem.docSrc, { signal: controller.signal })
+    fetch(selectedDocSrc, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) {
           throw new Error("문서를 불러오지 못했습니다.");
@@ -97,7 +102,7 @@ const ProjectMediaGrid = ({ items }) => {
     return () => {
       controller.abort();
     };
-  }, [selectedItem]);
+  }, [selectedDocSrc]);
 
   if (!items?.length) return null;
 
@@ -122,7 +127,7 @@ const ProjectMediaGrid = ({ items }) => {
                   aria-label={`${item.title} 크게 보기`}
                 >
                   <img
-                    src={item.src}
+                    src={getPublicAssetUrl(item.src)}
                     alt={item.alt ?? item.title}
                     className="h-full w-full object-contain transition duration-200 group-hover/image:scale-[1.02]"
                     loading="lazy"
@@ -202,7 +207,7 @@ const ProjectMediaGrid = ({ items }) => {
                 </button>
               </>
             )}
-            {selectedItem.docSrc ? (
+            {selectedDocSrc ? (
               <div className="max-h-[82dvh] overflow-auto rounded-lg bg-[#1e1e1e] p-5 text-slate-200 sm:p-7">
                 {documentError && (
                   <p className="text-sm font-bold text-red-300">
@@ -221,7 +226,7 @@ const ProjectMediaGrid = ({ items }) => {
             ) : (
               <div className="flex max-h-[82dvh] max-w-[92vw] items-center justify-center overflow-hidden rounded-lg bg-transparent">
                 <img
-                  src={selectedItem.src}
+                  src={selectedSrc}
                   alt={selectedItem.alt ?? selectedItem.title}
                   className="block max-h-[82dvh] max-w-full object-contain"
                 />
@@ -262,7 +267,7 @@ const ProjectThumbnail = ({ media, title }) => {
   return (
     <div className="flex h-36 w-full shrink-0 items-center justify-center overflow-hidden rounded-md border border-slate-200 bg-slate-100 sm:h-28 sm:w-44">
       <img
-        src={thumbnail.src}
+        src={getPublicAssetUrl(thumbnail.src)}
         alt={thumbnail.alt ?? `${title} 썸네일`}
         className="h-full w-full object-contain"
         loading="lazy"

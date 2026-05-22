@@ -208,7 +208,7 @@ const ProjectMediaGrid = ({ items }) => {
               </>
             )}
             {selectedDocSrc ? (
-              <div className="max-h-[82dvh] overflow-auto rounded-lg bg-[#1e1e1e] p-5 text-slate-200 sm:p-7">
+              <div className="h-[82dvh] overflow-auto rounded-lg bg-[#1e1e1e] p-5 text-slate-200 sm:p-7">
                 {documentError && (
                   <p className="text-sm font-bold text-red-300">
                     {documentError}

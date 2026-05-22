@@ -909,7 +909,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
   const canStart = isDifficultyUnlocked(selectedMode);
 
   return (
-    <div className="relative aspect-square w-full overflow-hidden border-[3px] border-slate-950 bg-white shadow-[8px_8px_0_#0f172a]">
+    <div className="mb-10 relative aspect-square w-full overflow-hidden border-[3px] border-slate-950 bg-white shadow-[8px_8px_0_#0f172a]">
       <canvas
         ref={canvasRef}
         aria-label="WASD로 캐릭터를 움직이는 미니게임"

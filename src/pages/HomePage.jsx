@@ -49,7 +49,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] overflow-hidden bg-[#fff5df] text-slate-950">
+    <main className="relative h-[100dvh] overflow-auto bg-[#fff5df] text-slate-950">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(255,88,88,0.34),transparent_26%),radial-gradient(circle_at_84%_24%,rgba(45,212,191,0.34),transparent_25%),radial-gradient(circle_at_58%_86%,rgba(250,204,21,0.36),transparent_28%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(15,23,42,0.13)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.13)_1px,transparent_1px)] [background-size:36px_36px]" />
       <div className="pointer-events-none absolute inset-0">
@@ -69,7 +69,7 @@ const HomePage = () => {
         ))}
       </div>
 
-      <section className="relative z-10 flex h-full min-h-0 items-center justify-center px-4 py-5 sm:px-8 sm:py-8">
+      <section className="relative z-10 flex h-full min-h-0 items-start justify-center px-4 py-5 sm:px-8 sm:py-8">
         <div className="flex w-full max-w-[640px] flex-col items-center gap-8">
           <div className="flex w-full shrink-0 flex-col items-center gap-4 text-center">
             <h1 className="relative text-[clamp(3rem,10vw,4.5rem)] font-black leading-[0.82] tracking-[-0.03em] text-slate-950 drop-shadow-[6px_6px_0_rgba(255,255,255,0.95)]">

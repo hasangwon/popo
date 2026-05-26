@@ -14,6 +14,7 @@ const ENEMY_LIMIT = 22;
 const ITEM_LIMIT = 4;
 const BULLET_LIMIT = 18;
 const ITEM_LIFETIME = 10;
+const JOYSTICK_RADIUS = 46;
 const MINI_GAME_NAME = "hasangwon-mini-game";
 const DIFFICULTIES = [
   {
@@ -148,7 +149,10 @@ const createInitialWeaponLevels = () =>
 
 const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
   const canvasRef = useRef(null);
+  const joystickKnobRef = useRef(null);
   const keysRef = useRef(new Set());
+  const touchVectorRef = useRef({ x: 0, y: 0 });
+  const activePointerIdRef = useRef(null);
   const frameRef = useRef(null);
   const [isStarted, setIsStarted] = useState(false);
   const [selectedMode, setSelectedMode] = useState("normal");
@@ -596,6 +600,13 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       cancelAnimationFrame(frameRef.current);
       frameRef.current = null;
       keysRef.current.clear();
+      touchVectorRef.current = { x: 0, y: 0 };
+      activePointerIdRef.current = null;
+
+      if (joystickKnobRef.current) {
+        joystickKnobRef.current.style.transform = "translate3d(0, 0, 0)";
+      }
+
       setGameResult(result);
       setIsStarted(false);
     };
@@ -622,9 +633,16 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       if (activeKeys.has("a")) xVector -= 1;
       if (activeKeys.has("d")) xVector += 1;
 
+      xVector += touchVectorRef.current.x;
+      yVector += touchVectorRef.current.y;
+
       if (xVector !== 0 && yVector !== 0) {
-        xVector *= Math.SQRT1_2;
-        yVector *= Math.SQRT1_2;
+        const movementLength = Math.hypot(xVector, yVector);
+
+        if (movementLength > 1) {
+          xVector /= movementLength;
+          yVector /= movementLength;
+        }
       }
 
       state.player.x = clamp(
@@ -725,14 +743,18 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
           state.player.x - enemy.x,
         );
         const speedMultiplier = enemy.isBoss ? 0.65 : difficulty;
+        const xVelocity =
+          Math.cos(angle) * enemy.speed * speedMultiplier +
+          Math.sin(enemy.wobble) * 5;
+        const yVelocity =
+          Math.sin(angle) * enemy.speed * speedMultiplier +
+          Math.cos(enemy.wobble) * 5;
+        const enemySpeed = Math.hypot(xVelocity, yVelocity);
+        const speedScale = enemySpeed > PLAYER_SPEED ? PLAYER_SPEED / enemySpeed : 1;
 
         enemy.wobble += delta * 4;
-        enemy.x +=
-          Math.cos(angle) * enemy.speed * speedMultiplier * delta +
-          Math.sin(enemy.wobble) * 5 * delta;
-        enemy.y +=
-          Math.sin(angle) * enemy.speed * speedMultiplier * delta +
-          Math.cos(enemy.wobble) * 5 * delta;
+        enemy.x += xVelocity * speedScale * delta;
+        enemy.y += yVelocity * speedScale * delta;
       });
 
       state.bullets = state.bullets
@@ -908,13 +930,80 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
   );
   const canStart = isDifficultyUnlocked(selectedMode);
 
+  const updateJoystick = (event) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const rawX = event.clientX - centerX;
+    const rawY = event.clientY - centerY;
+    const distanceFromCenter = Math.hypot(rawX, rawY);
+    const moveScale =
+      distanceFromCenter > JOYSTICK_RADIUS
+        ? JOYSTICK_RADIUS / distanceFromCenter
+        : 1;
+    const x = rawX * moveScale;
+    const y = rawY * moveScale;
+
+    touchVectorRef.current = {
+      x: x / JOYSTICK_RADIUS,
+      y: y / JOYSTICK_RADIUS,
+    };
+
+    if (joystickKnobRef.current) {
+      joystickKnobRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    }
+  };
+
+  const resetJoystick = () => {
+    touchVectorRef.current = { x: 0, y: 0 };
+    activePointerIdRef.current = null;
+
+    if (joystickKnobRef.current) {
+      joystickKnobRef.current.style.transform = "translate3d(0, 0, 0)";
+    }
+  };
+
+  const handleJoystickPointerDown = (event) => {
+    if (!isStarted) {
+      return;
+    }
+
+    activePointerIdRef.current = event.pointerId;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    updateJoystick(event);
+  };
+
+  const handleJoystickPointerMove = (event) => {
+    if (activePointerIdRef.current !== event.pointerId) {
+      return;
+    }
+
+    updateJoystick(event);
+  };
+
   return (
-    <div className="mb-10 relative aspect-square w-full overflow-hidden border-[3px] border-slate-950 bg-white shadow-[8px_8px_0_#0f172a]">
+    <div className="relative mb-10 aspect-square w-full overflow-hidden border-[3px] border-slate-950 bg-white shadow-[8px_8px_0_#0f172a] [touch-action:none]">
       <canvas
         ref={canvasRef}
         aria-label="WASD로 캐릭터를 움직이는 미니게임"
         className="block h-full w-full"
       />
+      {isStarted && (
+        <div
+          className="absolute bottom-4 left-4 flex h-28 w-28 items-center justify-center rounded-full border-[3px] border-slate-950 bg-white/70 shadow-[5px_5px_0_#0f172a] backdrop-blur-sm [touch-action:none] sm:hidden"
+          onPointerDown={handleJoystickPointerDown}
+          onPointerMove={handleJoystickPointerMove}
+          onPointerCancel={resetJoystick}
+          onPointerLeave={resetJoystick}
+          onPointerUp={resetJoystick}
+        >
+          <div className="absolute h-2 w-2 rounded-full bg-slate-950/35" />
+          <div
+            ref={joystickKnobRef}
+            className="h-11 w-11 rounded-full border-[3px] border-slate-950 bg-[#facc15] shadow-[3px_3px_0_#0f172a]"
+          />
+        </div>
+      )}
       {!isStarted && (
         <div className="absolute inset-0 flex items-center justify-center bg-white/75 px-5">
           <div className="flex w-full max-w-[280px] flex-col items-center gap-3">

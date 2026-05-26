@@ -4,6 +4,7 @@ import { sections } from "./constants/portfolioData";
 import HomePage from "./pages/HomePage";
 import PortfolioPage from "./pages/PortfolioPage";
 import ResumePage from "./pages/ResumePage";
+import { Analytics } from "@vercel/analytics/next";
 
 const initialMessages = [
   {
@@ -228,22 +229,25 @@ const App = () => {
   }
 
   return (
-    <main className="h-[100dvh] w-full overflow-hidden bg-[#f4f6f9] text-slate-800 lg:flex">
-      <ChatNavigator
-        activeId={navigatingTargetId || activeId}
-        isNavigating={isNavigating}
-        messages={messages}
-        navigatingTargetId={navigatingTargetId}
-        onSelect={selectSection}
-        sections={sections}
-      />
-      <PortfolioPage
-        activeId={activeId}
-        registerSection={registerSection}
-        scrollRef={scrollRef}
-        sections={sections}
-      />
-    </main>
+    <>
+      <Analytics />
+      <main className="h-[100dvh] w-full overflow-hidden bg-[#f4f6f9] text-slate-800 lg:flex">
+        <ChatNavigator
+          activeId={navigatingTargetId || activeId}
+          isNavigating={isNavigating}
+          messages={messages}
+          navigatingTargetId={navigatingTargetId}
+          onSelect={selectSection}
+          sections={sections}
+        />
+        <PortfolioPage
+          activeId={activeId}
+          registerSection={registerSection}
+          scrollRef={scrollRef}
+          sections={sections}
+        />
+      </main>
+    </>
   );
 };
 

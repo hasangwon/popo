@@ -12,7 +12,7 @@ const PLAYER_SPEED = 225;
 const PLAYER_RADIUS = 15;
 const ENEMY_LIMIT = 22;
 const ITEM_LIMIT = 4;
-const BULLET_LIMIT = 18;
+const BULLET_LIMIT = 40;
 const ITEM_LIFETIME = 10;
 const JOYSTICK_RADIUS = 46;
 const MINI_GAME_NAME = "hasangwon-mini-game";
@@ -154,10 +154,13 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
   const touchVectorRef = useRef({ x: 0, y: 0 });
   const activePointerIdRef = useRef(null);
   const frameRef = useRef(null);
+  const rankingSavedRef = useRef(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [isPreparingStart, setIsPreparingStart] = useState(false);
   const [selectedMode, setSelectedMode] = useState("normal");
   const [clearedModes, setClearedModes] = useState(getInitialClears);
   const [gameResult, setGameResult] = useState("");
+  const [playerName, setPlayerName] = useState("익명");
   const stateRef = useRef({
     player: {
       x: WORLD_SIZE / 2,
@@ -210,6 +213,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
     };
 
     const resetGame = () => {
+      rankingSavedRef.current = false;
       stateRef.current = {
         player: {
           x: WORLD_SIZE / 2,
@@ -347,6 +351,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       context.fillText("WASD", 16, 28);
       context.fillText(`SCORE ${state.score}`, 16, 50);
       context.fillText(`${activeWeapon.name} LV.${activeLevel}`, 16, 72);
+      context.fillText(playerName, 16, 94);
 
       context.fillStyle = "#e2e8f0";
       context.fillRect(WORLD_SIZE - 124, 18, 104, 13);
@@ -385,10 +390,18 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
         return null;
       }
 
-      let target = enemies[0];
+      const visibleEnemies = enemies.filter(
+        (enemy) =>
+          enemy.x >= 0 &&
+          enemy.x <= WORLD_SIZE &&
+          enemy.y >= 0 &&
+          enemy.y <= WORLD_SIZE,
+      );
+      const targets = visibleEnemies.length > 0 ? visibleEnemies : enemies;
+      let target = targets[0];
       let targetDistance = distance(player, target);
 
-      enemies.forEach((enemy) => {
+      targets.forEach((enemy) => {
         const nextDistance = distance(player, enemy);
 
         if (nextDistance < targetDistance) {
@@ -412,7 +425,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       const state = stateRef.current;
 
       if (state.bullets.length >= BULLET_LIMIT) {
-        return;
+        return false;
       }
 
       state.bullets.push({
@@ -426,6 +439,8 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
         kind,
         damage,
       });
+
+      return true;
     };
 
     const fireWeapon = () => {
@@ -433,7 +448,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       const target = getNearestEnemy();
 
       if (!target) {
-        return;
+        return false;
       }
 
       const weapon = state.activeWeapon ? weaponMap[state.activeWeapon] : null;
@@ -444,7 +459,7 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       );
 
       if (!weapon) {
-        addBullet({
+        return addBullet({
           angle,
           color: "#94a3b8",
           radius: 3,
@@ -452,25 +467,25 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
           life: 0.62,
           damage: 0.55,
         });
-
-        return;
       }
 
       if (state.activeWeapon === "shotgun") {
         const pelletCount = Math.min(3 + level, 8);
+        let didFire = false;
 
         for (let index = 0; index < pelletCount; index += 1) {
           const offset = (index - (pelletCount - 1) / 2) * 0.13;
-          addBullet({
-            angle: angle + offset,
-            color: weapon.color,
-            radius: 4,
-            speed: 315,
-            life: 0.48,
-          });
+          didFire =
+            addBullet({
+              angle: angle + offset,
+              color: weapon.color,
+              radius: 4,
+              speed: 315,
+              life: 0.48,
+            }) || didFire;
         }
 
-        return;
+        return didFire;
       }
 
       const finishEnemy = (enemy, score) => {
@@ -499,6 +514,10 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
           .sort((a, b) => distance(state.player, a) - distance(state.player, b))
           .slice(0, beamCount);
 
+        if (targets.length === 0) {
+          return false;
+        }
+
         targets.forEach((enemy) => {
           state.beams.push({
             x1: state.player.x,
@@ -518,29 +537,31 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
           finishEnemy(enemy, enemy.isBoss ? 300 : 10);
         });
 
-        return;
+        return true;
       }
 
       if (state.activeWeapon === "fire") {
         const flameCount = Math.min(5 + level * 2, 13);
+        let didFire = false;
 
         for (let index = 0; index < flameCount; index += 1) {
           const offset = (index - (flameCount - 1) / 2) * 0.13;
-          addBullet({
-            angle: angle + offset + (Math.random() - 0.5) * 0.08,
-            color: weapon.color,
-            radius: 7,
-            speed: 285 + level * 12,
-            life: 0.52,
-            kind: "fire",
-            damage: 3,
-          });
+          didFire =
+            addBullet({
+              angle: angle + offset + (Math.random() - 0.5) * 0.08,
+              color: weapon.color,
+              radius: 7,
+              speed: 285 + level * 12,
+              life: 0.52,
+              kind: "fire",
+              damage: 3,
+            }) || didFire;
         }
 
-        return;
+        return didFire;
       }
 
-      addBullet({
+      return addBullet({
         angle,
         color: weapon.color,
         radius: 5,
@@ -713,8 +734,11 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       }
 
       if (state.shotTimer > getShotDelay()) {
-        fireWeapon();
-        state.shotTimer = 0;
+        const didFire = fireWeapon();
+
+        if (didFire) {
+          state.shotTimer = 0;
+        }
 
         if (state.isCleared) {
           drawGame();
@@ -750,7 +774,8 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
           Math.sin(angle) * enemy.speed * speedMultiplier +
           Math.cos(enemy.wobble) * 5;
         const enemySpeed = Math.hypot(xVelocity, yVelocity);
-        const speedScale = enemySpeed > PLAYER_SPEED ? PLAYER_SPEED / enemySpeed : 1;
+        const speedScale =
+          enemySpeed > PLAYER_SPEED ? PLAYER_SPEED / enemySpeed : 1;
 
         enemy.wobble += delta * 4;
         enemy.x += xVelocity * speedScale * delta;
@@ -916,7 +941,24 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
       window.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isStarted, onBossEnter, selectedMode]);
+  }, [isStarted, onBossEnter, playerName, selectedMode]);
+
+  const startGame = async () => {
+    if (isPreparingStart) {
+      return;
+    }
+
+    setIsPreparingStart(true);
+
+    try {
+      setPlayerName("익명");
+      onGameReset?.();
+      setGameResult("");
+      setIsStarted(true);
+    } finally {
+      setIsPreparingStart(false);
+    }
+  };
 
   const isDifficultyUnlocked = (difficultyId) => {
     if (difficultyId === "normal") return true;
@@ -1014,19 +1056,11 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
             )}
             <button
               type="button"
-              disabled={!canStart}
+              disabled={!canStart || isPreparingStart}
               className="border-[3px] border-slate-950 bg-[#facc15] px-7 py-4 text-xl font-black text-slate-950 shadow-[7px_7px_0_#0f172a] transition-transform hover:-translate-x-1 hover:-translate-y-1 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-[4px_4px_0_#94a3b8] disabled:hover:translate-x-0 disabled:hover:translate-y-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-950"
-              onClick={() => {
-                if (!canStart) {
-                  return;
-                }
-
-                onGameReset?.();
-                setGameResult("");
-                setIsStarted(true);
-              }}
+              onClick={startGame}
             >
-              START
+              {isPreparingStart ? "READY" : "START"}
             </button>
             <div className="flex w-full gap-2">
               {DIFFICULTIES.map((difficulty) => {
@@ -1057,6 +1091,17 @@ const HomeMiniGame = ({ onBossEnter, onGameReset }) => {
                   </button>
                 );
               })}
+            </div>
+            <div className="flex items-center justify-center gap-3 text-xs font-black uppercase tracking-[0.12em] text-slate-600">
+              <span>PLAYER {playerName}</span>
+              {/* <span className="h-3 w-[2px] bg-slate-300" /> */}
+              {/* <button
+                type="button"
+                className="underline decoration-2 underline-offset-4 transition-colors hover:text-slate-950 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-950"
+                onClick={onRankingOpen}
+              >
+                RANKING
+              </button> */}
             </div>
             {/* <p className="text-center text-xs font-black uppercase tracking-[0.12em] text-slate-600">
               {selectedDifficulty.label} HP x{selectedDifficulty.healthMultiplier} SPD x{selectedDifficulty.speedMultiplier}

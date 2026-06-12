@@ -19,13 +19,14 @@ const getPublicAssetUrl = (src) =>
   src?.startsWith("/") ? `${import.meta.env.BASE_URL}${src.slice(1)}` : src;
 
 const getProjectSortValue = (period) => {
-  const match = period.match(/(\d{4})\.(\d{2})/);
+  const matches = [...period.matchAll(/(\d{4})\.(\d{2})/g)];
+  const endDate = matches.at(-1);
 
-  if (!match) {
+  if (!endDate) {
     return 0;
   }
 
-  return Number(`${match[1]}${match[2]}`);
+  return Number(`${endDate[1]}${endDate[2]}`);
 };
 
 const resumeProjectList = [...resumeProjects, ...resumeOtherProjects].sort(
@@ -80,6 +81,14 @@ const ResumePage = () => (
                   className="text-sky-700 underline-offset-4 hover:underline"
                 >
                   {resumeProfile.email}
+                </a>
+              ),
+              휴대폰: (
+                <a
+                  href={`tel:${resumeProfile.phone.replaceAll("-", "")}`}
+                  className="text-sky-700 underline-offset-4 hover:underline"
+                >
+                  {resumeProfile.phone}
                 </a>
               ),
               블로그: <ResumeLink href={resumeProfile.blog} />,
@@ -141,9 +150,13 @@ const ResumePage = () => (
                   {[project.company, project.role].filter(Boolean).join(" · ")}
                 </p>
               )}
-              <p className="mt-2 text-[0.95rem] leading-7 text-slate-700">
-                {project.summary}
-              </p>
+              {project.bullets?.length > 0 ? (
+                <ResumeBullets items={project.bullets} />
+              ) : (
+                <p className="mt-2 text-[0.95rem] leading-7 text-slate-700">
+                  {project.summary}
+                </p>
+              )}
             </section>
           ))}
         </div>

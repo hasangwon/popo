@@ -7,6 +7,11 @@ const contactLinks = [
     value: profile.email,
     href: `mailto:${profile.email}`,
   },
+  {
+    label: "전화번호",
+    value: profile.phone,
+    href: `tel:${profile.phone.replaceAll(" ", "")}`,
+  },
 ];
 
 const ContactSection = ({ active, registerSection, section }) => (

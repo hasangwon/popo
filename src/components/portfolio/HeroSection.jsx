@@ -17,16 +17,16 @@ const coreTags = [
 
 const featuredProjects = [
   {
-    id: "atomy-acare",
-    name: "에이케어",
-    title: "앱 내 건강관리 챗봇",
-    desc: "WebSocket, STT, 앱 권한 브릿지",
-  },
-  {
     id: "kiwoom-chatbot",
     name: "키움증권",
     title: "영웅문 앱 챗봇",
     desc: "WebView 입력 UX, 상태 구조, 차트 UI",
+  },
+  {
+    id: "bublitt",
+    name: "버블잇",
+    title: "챗봇 빌더 Admin/SDK",
+    desc: "운영 기능, 상태 구조, 모노레포 빌드 최적화",
   },
   {
     id: "neulpet",
@@ -49,7 +49,8 @@ const FlowBanner = ({ onProjectSelect }) => (
           className="block min-h-28 min-w-0 rounded-lg border border-sky-100 bg-white/80 p-4 text-left no-underline transition hover:border-sky-500 hover:bg-white focus-visible:border-sky-500 focus-visible:bg-white focus-visible:outline-none"
           onClick={() => onProjectSelect(project.id)}
         >
-          <span className="text-xs font-black text-sky-600">
+          <span className="flex items-center gap-1 text-xs font-black text-sky-600">
+            <span aria-hidden="true">⭐</span>
             {project.name}
           </span>
           <strong className="mt-2 block text-lg leading-tight text-slate-950">

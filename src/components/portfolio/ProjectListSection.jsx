@@ -1,16 +1,6 @@
 import PortfolioSection from "./PortfolioSection";
 import ProjectAccordion from "./ProjectAccordion";
 
-const scrollToProject = (projectId) => {
-  window.setTimeout(() => {
-    requestAnimationFrame(() => {
-      document
-        .getElementById(`project-${projectId}`)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }, 50);
-};
-
 const ProjectListSection = ({
   active,
   openProjectId,
@@ -35,17 +25,8 @@ const ProjectListSection = ({
           <ProjectAccordion
             key={projectId}
             isOpen={openProjectId === projectId}
-            onToggle={() => {
-              setOpenProjectId((currentId) => {
-                const nextId = currentId === projectId ? "" : projectId;
-
-                if (nextId) {
-                  scrollToProject(nextId);
-                }
-
-                return nextId;
-              });
-            }}
+            onClose={() => setOpenProjectId("")}
+            onOpen={() => setOpenProjectId(projectId)}
             project={project}
           />
         );

@@ -4,7 +4,6 @@ export const profile = {
   summary:
     "관리자용 웹 서비스와 대화형 UI 중심의 프론트엔드 개발 이력을 정리했습니다.",
   email: "305243@naver.com",
-  phone: "010 9874 3299",
   github: "https://github.com/hasangwon",
   blog: "https://bitcoins.tistory.com/",
   experience: "약 4년 3개월",
@@ -45,7 +44,7 @@ export const sections = [
     id: "contact",
     index: "06",
     label: "연락처",
-    prompt: "연락 가능한 이메일과 전화번호를 알려줘.",
+    prompt: "연락 가능한 이메일을 알려줘.",
   },
 ];
 

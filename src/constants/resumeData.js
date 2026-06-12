@@ -4,7 +4,6 @@ export const resumeProfile = {
   experience: "약 4년 3개월",
   portfolio: "https://hasangwon.com/portfolio",
   email: "305243@naver.com",
-  phone: "010-9874-3299",
   blog: "https://bitcoins.tistory.com",
   github: "https://github.com/hasangwon",
   photo: "/profile/hasangwon.jpg",

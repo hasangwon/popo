@@ -83,14 +83,6 @@ const ResumePage = () => (
                   {resumeProfile.email}
                 </a>
               ),
-              휴대폰: (
-                <a
-                  href={`tel:${resumeProfile.phone.replaceAll("-", "")}`}
-                  className="text-sky-700 underline-offset-4 hover:underline"
-                >
-                  {resumeProfile.phone}
-                </a>
-              ),
               블로그: <ResumeLink href={resumeProfile.blog} />,
               깃허브: <ResumeLink href={resumeProfile.github} />,
               포트폴리오: <ResumeLink href={resumeProfile.portfolio} />,

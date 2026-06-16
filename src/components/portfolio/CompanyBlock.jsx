@@ -1,6 +1,3 @@
-import DotList from "../common/DotList";
-import FillBox from "../common/FillBox";
-
 const CompanyBlock = ({ company }) => (
   <article className="mt-5 rounded-md border border-slate-200 bg-slate-50 p-5">
     <div className="min-w-0">
@@ -11,12 +8,20 @@ const CompanyBlock = ({ company }) => (
         </span>
       </div>
       <p className="mt-2 text-sm font-bold text-sky-700">{company.role}</p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {company.keywords.map((keyword) => (
+          <span
+            key={keyword}
+            className="rounded border border-slate-200 bg-white px-2.5 py-1 text-xs font-bold text-slate-600"
+          >
+            {keyword}
+          </span>
+        ))}
+      </div>
+      <p className="mt-4 text-[0.92rem] font-medium leading-7 text-slate-700">
+        {company.highlight}
+      </p>
     </div>
-    <p className="mt-4 text-[0.92rem] font-medium leading-7 text-slate-700">
-      {company.summary}
-    </p>
-    {company.bullets?.length > 0 && <DotList items={company.bullets} />}
-    {company.fill && <FillBox>{company.fill}</FillBox>}
   </article>
 );
 

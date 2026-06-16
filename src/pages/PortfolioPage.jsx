@@ -20,10 +20,6 @@ const PortfolioPage = ({ activeId, registerSection, scrollRef, sections }) => {
 
   const openProject = (projectId) => {
     setOpenProjectId(projectId);
-    requestAnimationFrame(() => {
-      const target = document.getElementById(`project-${projectId}`);
-      target?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
   };
 
   return (

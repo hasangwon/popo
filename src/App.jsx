@@ -15,12 +15,12 @@ const initialMessages = [
   {
     id: "intro-2",
     from: "assistant",
-    text: "경력, 프로젝트, 결과물을 섹션별로 확인할 수 있습니다.",
+    text: "소개, 경력, 프로젝트별 핵심 기여와 문제 해결 사례를 확인할 수 있습니다.",
   },
 ];
 
 const getNavigationAnswer = (section) =>
-  `${section.index}. ${section.label} 섹션으로 이동했습니다.`;
+  `${section.index}. ${section.label} 섹션으로 이동했어요.`;
 
 const getCurrentPath = () => {
   const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -62,18 +62,15 @@ const App = () => {
       const pendingMessage = pendingMessageRef.current;
       if (pendingMessage?.targetId === targetId) {
         const section = sectionMap[targetId];
-        setMessages((prev) =>
-          prev.map((message) =>
-            message.id === pendingMessage.id
-              ? {
-                  ...message,
-                  text: getNavigationAnswer(section),
-                  isLoading: false,
-                }
-              : message,
-          ),
-        );
         pendingMessageRef.current = null;
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: pendingMessage.id,
+            from: "assistant",
+            text: getNavigationAnswer(section),
+          },
+        ]);
       }
 
       navigationTargetRef.current = "";
@@ -96,9 +93,6 @@ const App = () => {
 
     if (pane.scrollTop <= 8) {
       setActiveId(nextActiveId);
-      if (navigationTargetRef.current === nextActiveId) {
-        unlockNavigation(nextActiveId);
-      }
       return;
     }
 
@@ -123,10 +117,7 @@ const App = () => {
 
     setActiveId(resolvedActiveId);
 
-    if (navigationTargetRef.current === resolvedActiveId) {
-      unlockNavigation(resolvedActiveId);
-    }
-  }, [unlockNavigation]);
+  }, []);
 
   const registerSection = useCallback((id, node) => {
     if (node) {
@@ -163,12 +154,6 @@ const App = () => {
           from: "recruiter",
           text: section.prompt,
         },
-        {
-          id: pendingAssistantId,
-          from: "assistant",
-          text: "이동 중입니다.",
-          isLoading: true,
-        },
       ]);
 
       if (!pane || !target) {
@@ -204,11 +189,18 @@ const App = () => {
 
     updateActiveFromScroll();
     pane.addEventListener("scroll", handleScroll, { passive: true });
-    pane.addEventListener("scrollend", updateActiveFromScroll);
+    const handleScrollEnd = () => {
+      updateActiveFromScroll();
+      if (navigationTargetRef.current) {
+        unlockNavigation(navigationTargetRef.current);
+      }
+    };
+
+    pane.addEventListener("scrollend", handleScrollEnd);
 
     return () => {
       pane.removeEventListener("scroll", handleScroll);
-      pane.removeEventListener("scrollend", updateActiveFromScroll);
+      pane.removeEventListener("scrollend", handleScrollEnd);
       if (frameRef.current) {
         cancelAnimationFrame(frameRef.current);
       }
@@ -216,7 +208,7 @@ const App = () => {
         clearTimeout(unlockTimerRef.current);
       }
     };
-  }, [updateActiveFromScroll]);
+  }, [unlockNavigation, updateActiveFromScroll]);
 
   const currentPath = getCurrentPath();
 

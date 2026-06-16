@@ -44,7 +44,7 @@ export const sections = [
     id: "contact",
     index: "06",
     label: "연락처 및 정보",
-    prompt: "연락처와 외부 정보를 확인합니다.",
+    prompt: "연락처 및 외부 정보를 알려줘",
   },
 ];
 

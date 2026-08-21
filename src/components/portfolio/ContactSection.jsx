@@ -36,10 +36,10 @@ const ContactSection = ({ active, registerSection, section }) => (
           href={link.href}
           rel={link.external ? "noreferrer" : undefined}
           target={link.external ? "_blank" : undefined}
-          className="grid gap-1 rounded-md border border-sky-100 bg-white px-4 py-3 transition hover:border-sky-400 hover:bg-sky-50"
+          className="grid gap-1 rounded-md border border-sky-100 bg-white dark:bg-slate-900 px-4 py-3 transition hover:border-sky-400 hover:bg-sky-50"
         >
-          <span className="text-xs font-black text-sky-700">{link.label}</span>
-          <span className="break-words font-mono text-sm font-bold text-slate-700">
+          <span className="text-xs font-black text-sky-700 dark:text-sky-400">{link.label}</span>
+          <span className="break-words font-mono text-sm font-bold text-slate-700 dark:text-slate-300">
             {link.value}
           </span>
         </a>

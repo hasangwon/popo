@@ -104,7 +104,7 @@ const renderMarkdown = (markdown) => {
       index += 1;
       nodes.push(
         <pre key={`code-${index}`} className="my-5 overflow-x-auto rounded bg-black p-4 text-sm leading-6 text-slate-200">
-          {lang && <span className="mb-3 block text-xs font-black uppercase text-slate-500">{lang}</span>}
+          {lang && <span className="mb-3 block text-xs font-black uppercase text-slate-500 dark:text-slate-400">{lang}</span>}
           <code>{codeLines.join("\n")}</code>
         </pre>,
       );

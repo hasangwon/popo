@@ -39,7 +39,7 @@ const featuredProjects = [
 const FlowBanner = ({ onProjectSelect }) => (
   <div className="w-full min-w-0 overflow-hidden rounded-xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-sky-100 p-4 sm:p-5">
     <div className="mb-4 flex items-center justify-between gap-3">
-      <span className="text-sm font-black text-slate-700">대표 프로젝트</span>
+      <span className="text-sm font-black text-slate-700 dark:text-slate-300">대표 프로젝트</span>
     </div>
     <div className="grid gap-3 sm:grid-cols-3">
       {featuredProjects.map((project) => (
@@ -53,10 +53,10 @@ const FlowBanner = ({ onProjectSelect }) => (
             <span aria-hidden="true">⭐</span>
             {project.name}
           </span>
-          <strong className="mt-2 block text-lg leading-tight text-slate-950">
+          <strong className="mt-2 block text-lg leading-tight text-slate-950 dark:text-slate-100">
             {project.title}
           </strong>
-          <p className="mt-3 text-[0.82rem] font-bold leading-6 text-slate-600">
+          <p className="mt-3 text-[0.82rem] font-bold leading-6 text-slate-600 dark:text-slate-400">
             {project.desc}
           </p>
         </button>
@@ -75,17 +75,17 @@ const HeroSection = ({ active, onProjectSelect, registerSection, section }) => (
   >
     <div className="mt-5 min-w-0">
       <div className="min-w-0">
-        <p className="mt-8 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">
+        <p className="mt-8 text-4xl font-black leading-tight text-slate-950 dark:text-slate-100 sm:text-5xl">
           {profile.name}
         </p>
         <div className="mt-3 flex flex-wrap items-center gap-2">
-          <p className="text-lg font-black text-sky-700">{profile.role}</p>
-          <span className="rounded bg-slate-100 px-2 py-1 text-xs font-black text-slate-600">
+          <p className="text-lg font-black text-sky-700 dark:text-sky-400">{profile.role}</p>
+          <span className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-1 text-xs font-black text-slate-600 dark:text-slate-400">
             {profile.experience}
           </span>
         </div>
 
-        <p className="mt-5 max-w-full break-words text-[0.98rem] font-medium leading-8 text-slate-700">
+        <p className="mt-5 max-w-full break-words text-[0.98rem] font-medium leading-8 text-slate-700 dark:text-slate-300">
           {profile.summary}
         </p>
         <div className="mt-5">

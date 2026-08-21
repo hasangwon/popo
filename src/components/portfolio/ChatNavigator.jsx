@@ -35,9 +35,9 @@ const ChatNavigator = ({
   }, [messages]);
 
   return (
-    <aside className="hidden h-full w-[23%] min-w-[300px] flex-col border-r border-slate-200 bg-white lg:flex">
-      <div className="border-b border-slate-100 bg-[#fafafa] p-5">
-        <h1 className="text-lg font-black text-slate-950">하상원</h1>
+    <aside className="hidden h-full w-[23%] min-w-[300px] flex-col border-r border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 lg:flex">
+      <div className="border-b border-slate-100 dark:border-slate-800 bg-[#fafafa] p-5">
+        <h1 className="text-lg font-black text-slate-950 dark:text-slate-100">하상원</h1>
         <p className="mt-1 text-xs font-black uppercase tracking-[0.14em] text-slate-400">
           Portfolio Assistant
         </p>
@@ -45,7 +45,7 @@ const ChatNavigator = ({
 
       <div
         ref={logRef}
-        className="flex-1 space-y-3 overflow-y-auto border-b scrollbar-hidden border-slate-100 p-4 text-[0.8rem]"
+        className="flex-1 space-y-3 overflow-y-auto border-b scrollbar-hidden border-slate-100 dark:border-slate-800 p-4 text-[0.8rem]"
       >
         {messages.map((message, index) => {
           const isAssistant = message.from === "assistant";
@@ -62,14 +62,14 @@ const ChatNavigator = ({
                 <img
                   src={getPublicAssetUrl(avatar.src)}
                   alt={avatar.alt}
-                  className="mb-1 h-7 w-7 rounded-full border border-slate-200 bg-white object-cover"
+                  className="mb-1 h-7 w-7 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 object-cover"
                 />
               )}
               <div
                 className={`max-w-[92%] rounded-2xl px-3 py-2 leading-5 ${
                   isAssistant
-                    ? "rounded-tl-md bg-slate-100 text-slate-700"
-                    : "rounded-tr-md bg-sky-100 font-bold text-sky-800"
+                    ? "rounded-tl-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                    : "rounded-tr-md bg-sky-100 font-bold text-sky-800 dark:bg-sky-900/50 dark:text-sky-200"
                 }`}
               >
                 {message.text}
@@ -87,10 +87,10 @@ const ChatNavigator = ({
             disabled={isNavigating || activeId === section.id}
             onClick={() => onSelect(section.id)}
             className={`w-full rounded-md border px-3 py-3 text-left text-[0.8rem] font-black transition ${activeId === section.id
-                ? "cursor-default border-sky-600 bg-sky-50 text-sky-700 shadow-[inset_3px_0_0_#0284c7]"
+                ? "cursor-default border-sky-600 bg-sky-50 text-sky-700 dark:text-sky-400 shadow-[inset_3px_0_0_#0284c7]"
                 : isNavigating
-                  ? "cursor-wait border-slate-200 bg-slate-50 text-slate-600"
-                  : "border-slate-200 bg-slate-50 text-slate-600 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
+                  ? "cursor-wait border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400"
+                  : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700"
               }`}
           >
             <span className="font-mono">{section.index}</span>

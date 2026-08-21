@@ -26,7 +26,7 @@ const PortfolioPage = ({ activeId, registerSection, scrollRef, sections }) => {
     <div
       ref={scrollRef}
       data-scroll-pane="main"
-      className="h-full w-full min-w-0 overflow-y-auto overflow-x-hidden bg-slate-100 p-0 scroll-smooth sm:px-5 sm:py-5 lg:w-[77%] lg:p-8 xl:p-10"
+      className="h-full w-full min-w-0 overflow-y-auto overflow-x-hidden bg-slate-100 dark:bg-slate-800 p-0 scroll-smooth sm:px-5 sm:py-5 lg:w-[77%] lg:p-8 xl:p-10"
     >
       <div className="mx-auto grid w-full min-w-0 max-w-full gap-6 overflow-x-hidden p-4 sm:max-w-[1160px] sm:p-0">
         <HeroSection

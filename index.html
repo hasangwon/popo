@@ -49,6 +49,19 @@
   <meta name="twitter:description" content="하상원 프론트엔드 개발자 포트폴리오입니다." />
   <meta name="twitter:image" content="https://hasangwon.com/og-image.png" />
   <meta name="twitter:image:alt" content="하상원 프론트엔드 개발자 포트폴리오" />
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("theme");
+        if (
+          theme === "dark" ||
+          (!theme && matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) { /* noop */ }
+    })();
+  </script>
 </head>
 
 <body>

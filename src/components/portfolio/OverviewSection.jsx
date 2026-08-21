@@ -30,13 +30,13 @@ const OverviewSection = ({ active, registerSection, section }) => (
     title="02. 작업 방식"
   >
     <div className="mt-5 grid gap-5">
-      <div className="rounded-md border border-slate-200 bg-slate-50 p-5">
-        <p className="font-black text-slate-950">작업 방식</p>
+      <div className="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 p-5">
+        <p className="font-black text-slate-950 dark:text-slate-100">작업 방식</p>
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           {workPrinciples.map((item) => (
-            <article key={item.title} className="rounded-md border border-slate-200 bg-white p-4">
-              <h3 className="text-sm font-black text-sky-700">{item.title}</h3>
-              <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">{item.text}</p>
+            <article key={item.title} className="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4">
+              <h3 className="text-sm font-black text-sky-700 dark:text-sky-400">{item.title}</h3>
+              <p className="mt-2 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-300">{item.text}</p>
             </article>
           ))}
         </div>
@@ -44,9 +44,9 @@ const OverviewSection = ({ active, registerSection, section }) => (
 
       <div className="grid gap-4 lg:grid-cols-2">
         {visibleStrengths.map((item) => (
-          <article key={item.title} className="min-w-0 rounded-md border border-slate-200 bg-white p-5">
-            <h3 className="font-black text-slate-950">{item.title}</h3>
-            <p className="mt-3 break-words text-sm leading-6 text-slate-600">{item.body}</p>
+          <article key={item.title} className="min-w-0 rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5">
+            <h3 className="font-black text-slate-950 dark:text-slate-100">{item.title}</h3>
+            <p className="mt-3 break-words text-sm leading-6 text-slate-600 dark:text-slate-400">{item.body}</p>
             <FillBox>{item.fill}</FillBox>
           </article>
         ))}

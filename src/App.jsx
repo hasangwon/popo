@@ -223,7 +223,7 @@ const App = () => {
   return (
     <>
       <Analytics />
-      <main className="h-[100dvh] w-full overflow-hidden bg-[#f4f6f9] text-slate-800 lg:flex">
+      <main className="h-[100dvh] w-full overflow-hidden bg-[#f4f6f9] dark:bg-slate-950 text-slate-800 dark:text-slate-200 lg:flex">
         <ChatNavigator
           activeId={navigatingTargetId || activeId}
           isNavigating={isNavigating}

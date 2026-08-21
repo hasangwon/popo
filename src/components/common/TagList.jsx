@@ -3,7 +3,7 @@ const TagList = ({ items }) => (
     {items.map((item) => (
       <span
         key={item}
-        className="max-w-full break-words rounded bg-slate-100 px-2 py-1 text-xs font-bold text-slate-700"
+        className="max-w-full break-words rounded bg-slate-100 dark:bg-slate-800 px-2 py-1 text-xs font-bold text-slate-700 dark:text-slate-300"
       >
         {item}
       </span>

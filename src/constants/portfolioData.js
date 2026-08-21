@@ -6,7 +6,7 @@ export const profile = {
   email: "305243@naver.com",
   github: "https://github.com/hasangwon",
   blog: "https://bitcoins.tistory.com/",
-  experience: "약 4년 3개월",
+  experience: "약 4년 7개월",
 };
 
 export const sections = [
@@ -77,9 +77,19 @@ export const strengths = [
 
 export const companies = [
   {
+    id: "plingcast",
+    name: "플링캐스트",
+    period: "2026.08 ~ 현재",
+    role: "프론트엔드 개발자",
+    keywords: [],
+    highlight: "",
+    summary: "",
+    bullets: [],
+  },
+  {
     id: "gentlepie",
     name: "젠틀파이",
-    period: "2024.06 ~ 현재",
+    period: "2024.06 ~ 2026.07",
     role: "챗봇 빌더/SDK 및 고객사 챗봇 프론트엔드",
     keywords: ["대화형 UI", "WebView", "SSE·WebSocket", "고객사 프로젝트"],
     highlight:

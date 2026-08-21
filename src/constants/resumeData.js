@@ -1,7 +1,7 @@
 export const resumeProfile = {
   name: "하상원",
   role: "Frontend Developer",
-  experience: "약 4년 3개월",
+  experience: "약 4년 7개월",
   portfolio: "https://hasangwon.com/portfolio",
   email: "305243@naver.com",
   blog: "https://bitcoins.tistory.com",
@@ -31,8 +31,15 @@ export const resumeSkillGroups = [
 
 export const resumeCompanies = [
   {
+    name: "플링캐스트",
+    period: "2026.08 ~ 현재",
+    role: "프론트엔드 개발자",
+    summary: "",
+    bullets: [],
+  },
+  {
     name: "젠틀파이",
-    period: "2024.06 ~ 현재",
+    period: "2024.06 ~ 2026.07",
     role: "챗봇 빌더/SDK 및 고객사 챗봇 프론트엔드",
     summary:
       "챗봇 빌더와 고객사 챗봇 프론트엔드를 개발했습니다. 버블잇 Admin/SDK, 통계, 지식 업로드 기능을 유지보수했고, 키움증권, 식약처, LG HVAC, 애터미, 설해원 등 고객사 챗봇 UI를 구현했습니다.",

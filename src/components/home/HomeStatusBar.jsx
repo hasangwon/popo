@@ -186,21 +186,13 @@ const WeatherPill = () => {
   );
 };
 
-const HomeStatusBar = ({ isDark, onToggleDark }) => (
+const HomeStatusBar = () => (
   <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-center justify-between gap-2 px-4 py-3 sm:px-6">
     <div className="pointer-events-auto">
       <ClockPill />
     </div>
-    <div className="pointer-events-auto flex items-center gap-2">
+    <div className="pointer-events-auto">
       <WeatherPill />
-      <button
-        type="button"
-        onClick={onToggleDark}
-        aria-label={isDark ? "라이트 모드로 전환" : "다크 모드로 전환"}
-        className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-950/15 bg-white/70 text-base backdrop-blur-sm transition-transform hover:scale-105 dark:border-white/15 dark:bg-slate-900/70"
-      >
-        {isDark ? "☀️" : "🌙"}
-      </button>
     </div>
   </header>
 );

@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import HomeRoguelite from "../components/home/HomeRoguelite";
 import HomeStatusBar from "../components/home/HomeStatusBar";
 import AdSlot from "../components/common/AdSlot";
-import useDarkMode from "../hooks/useDarkMode";
 import { profile } from "../constants/portfolioData";
 
 const links = [
@@ -40,7 +39,6 @@ const floatingShapes = [
 
 const HomePage = () => {
   const [hiddenBossShapes, setHiddenBossShapes] = useState([]);
-  const [isDark, toggleDark] = useDarkMode();
 
   const handleBossEnter = useCallback((shapeId) => {
     setHiddenBossShapes((prev) =>
@@ -73,7 +71,7 @@ const HomePage = () => {
         ))}
       </div>
 
-      <HomeStatusBar isDark={isDark} onToggleDark={toggleDark} />
+      <HomeStatusBar />
 
       <section className="relative z-10 flex min-h-full items-start justify-center px-4 pb-6 pt-16 sm:px-8 sm:pt-20">
         <div className="flex w-full max-w-[640px] flex-col items-center gap-6">
@@ -104,7 +102,6 @@ const HomePage = () => {
           </div>
 
           <HomeRoguelite
-            isDark={isDark}
             onBossEnter={handleBossEnter}
             onGameReset={handleGameReset}
           />

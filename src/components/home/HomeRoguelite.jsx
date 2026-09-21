@@ -1,10 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  isMuted,
-  playSound,
-  setMuted,
-  unlockAudio,
-} from "../../lib/gameAudio";
 
 const WORLD_SIZE = 520;
 const PLAYER_RADIUS = 14;
@@ -28,10 +22,39 @@ const MOVE_KEY_MAP = {
 
 // 배경 도형과 1:1 대응하는 보스 스테이지
 const BOSS_STAGES = [
-  { time: 45, shapeId: "pink", color: "#ff4d6d", shape: "rounded", hp: 320, name: "Memory Leak" },
-  { time: 95, shapeId: "sky", color: "#22d3ee", shape: "circle", hp: 620, name: "Infinite Loop" },
-  { time: 145, shapeId: "yellow", color: "#facc15", shape: "square", hp: 980, name: "Race Condition" },
-  { time: 200, shapeId: "lime", color: "#bef264", shape: "rounded", hp: 1500, name: "Legacy Code", isFinal: true },
+  {
+    time: 45,
+    shapeId: "pink",
+    color: "#ff4d6d",
+    shape: "rounded",
+    hp: 320,
+    name: "Memory Leak",
+  },
+  {
+    time: 95,
+    shapeId: "sky",
+    color: "#22d3ee",
+    shape: "circle",
+    hp: 620,
+    name: "Infinite Loop",
+  },
+  {
+    time: 145,
+    shapeId: "yellow",
+    color: "#facc15",
+    shape: "square",
+    hp: 980,
+    name: "Race Condition",
+  },
+  {
+    time: 200,
+    shapeId: "lime",
+    color: "#bef264",
+    shape: "rounded",
+    hp: 1500,
+    name: "Legacy Code",
+    isFinal: true,
+  },
 ];
 
 const RARITIES = {
@@ -291,10 +314,7 @@ const formatTime = (seconds) => {
 const rollUpgradeChoices = (stats, player, acquired) => {
   const available = UPGRADES.filter((upgrade) => {
     if (upgrade.onlyWhenHurt && player.hp > stats.maxHp * 0.65) return false;
-    if (
-      upgrade.maxStacks &&
-      (acquired[upgrade.id] || 0) >= upgrade.maxStacks
-    ) {
+    if (upgrade.maxStacks && (acquired[upgrade.id] || 0) >= upgrade.maxStacks) {
       return false;
     }
     return true;
@@ -362,7 +382,7 @@ const createRunState = () => ({
   finalBossDefeated: false,
 });
 
-const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
+const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
   const canvasRef = useRef(null);
   const joystickKnobRef = useRef(null);
   const frameRef = useRef(null);
@@ -371,25 +391,11 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
   const activePointerIdRef = useRef(null);
   const runRef = useRef(createRunState());
   const screenRef = useRef("idle");
-  const isDarkRef = useRef(isDark);
   const [screen, setScreenState] = useState("idle");
   const [levelChoices, setLevelChoices] = useState([]);
   const [bestRecord, setBestRecord] = useState(readBestRecord);
   const [lastResult, setLastResult] = useState(null);
   const [isCoarsePointer, setIsCoarsePointer] = useState(false);
-  const [muted, setMutedState] = useState(isMuted);
-
-  const toggleMute = useCallback(() => {
-    setMutedState((prev) => {
-      setMuted(!prev);
-      return !prev;
-    });
-  }, []);
-
-  useEffect(() => {
-    isDarkRef.current = isDark;
-  }, [isDark]);
-
   const setScreen = useCallback((next) => {
     screenRef.current = next;
     setScreenState(next);
@@ -432,14 +438,12 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         setBestRecord(nextBest);
       }
 
-      playSound(outcome === "victory" ? "victory" : "over");
       setScreen(outcome === "victory" ? "victory" : "over");
     },
     [setScreen],
   );
 
   const startRun = useCallback(() => {
-    unlockAudio();
     runRef.current = createRunState();
     runRef.current.lastTime = performance.now();
     onGameReset?.();
@@ -560,7 +564,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
 
       spawnDamageText(enemy.x, enemy.y - enemy.radius, amount, isCrit);
       spawnParticles(enemy.x, enemy.y, enemy.color, 2, 60);
-      playSound("hit");
 
       if (enemy.hp <= 0 && !enemy.dead) {
         enemy.dead = true;
@@ -568,8 +571,13 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         run.combo += 1;
         run.comboTimer = 1.7;
         dropGem(enemy);
-        spawnParticles(enemy.x, enemy.y, enemy.color, enemy.isBoss ? 30 : 8, enemy.isBoss ? 200 : 120);
-        playSound("kill");
+        spawnParticles(
+          enemy.x,
+          enemy.y,
+          enemy.color,
+          enemy.isBoss ? 30 : 8,
+          enemy.isBoss ? 200 : 120,
+        );
 
         if (enemy.isBoss) {
           run.shake = Math.max(run.shake, 12);
@@ -632,7 +640,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         2,
         45,
       );
-      playSound("shoot");
 
       return true;
     };
@@ -648,7 +655,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
       run.shake = Math.max(run.shake, 7);
       run.hitStop = Math.max(run.hitStop, 0.05);
       spawnParticles(player.x, player.y, "#ef4444", 8, 130);
-      playSound("hurt");
 
       if (player.hp <= 0) {
         player.hp = 0;
@@ -723,7 +729,7 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
           life: 0.22,
           maxLife: 0.22,
           size: 7,
-          color: isDarkRef.current ? "rgba(248,250,252,0.5)" : "rgba(17,24,39,0.35)",
+          color: "rgba(17,24,39,0.35)",
         });
       }
 
@@ -756,7 +762,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         run.enemies.push(createBoss(stage));
         run.bossAlertTimer = 2.2;
         run.bossAlertName = stage.name;
-        playSound("boss");
         onBossEnter?.(stage.shapeId);
       });
 
@@ -823,13 +828,11 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
             if (enemy.dead) return;
             if (run.gameTime - enemy.lastOrbitHit < 0.45) return;
 
-            if (
-              Math.hypot(orbX - enemy.x, orbY - enemy.y) <
-              8 + enemy.radius
-            ) {
+            if (Math.hypot(orbX - enemy.x, orbY - enemy.y) < 8 + enemy.radius) {
               enemy.lastOrbitHit = run.gameTime;
 
-              const pushDist = Math.hypot(enemy.x - player.x, enemy.y - player.y) || 1;
+              const pushDist =
+                Math.hypot(enemy.x - player.x, enemy.y - player.y) || 1;
               damageEnemy(
                 enemy,
                 stats.damage * 0.8,
@@ -961,7 +964,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         if (dist < PLAYER_RADIUS + gem.radius + 2) {
           run.xp += gem.value;
           spawnParticles(gem.x, gem.y, "#38bdf8", 3, 70);
-          playSound("gem");
           return false;
         }
 
@@ -975,7 +977,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
 
         const choices = rollUpgradeChoices(run.stats, player, run.acquired);
         if (choices.length > 0) {
-          playSound("levelup");
           setLevelChoices(choices);
           setScreen("levelup");
         }
@@ -1015,7 +1016,13 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
       if (shape === "square") {
         context.rect(x - radius, y - radius, radius * 2, radius * 2);
       } else if (shape === "rounded") {
-        context.roundRect(x - radius, y - radius, radius * 2, radius * 2, radius * 0.45);
+        context.roundRect(
+          x - radius,
+          y - radius,
+          radius * 2,
+          radius * 2,
+          radius * 0.45,
+        );
       } else {
         context.arc(x, y, radius, 0, Math.PI * 2);
       }
@@ -1049,35 +1056,19 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
       const scale = rect.width / WORLD_SIZE;
       const run = runRef.current;
       const { player, stats } = run;
-      const dark = isDarkRef.current;
-
-      const palette = dark
-        ? {
-            bgInner: "#16213e",
-            bgOuter: "#0b1020",
-            grid: "rgba(148, 163, 184, 0.09)",
-            ink: "#0b1020",
-            outline: "#e2e8f0",
-            text: "#e2e8f0",
-            subText: "#94a3b8",
-            playerBody: "#f8fafc",
-            playerEye: "#0f172a",
-            barBg: "rgba(30, 41, 59, 0.9)",
-            vignette: "rgba(2, 6, 23, 0.55)",
-          }
-        : {
-            bgInner: "#fffdf4",
-            bgOuter: "#f5ecd7",
-            grid: "rgba(15, 23, 42, 0.1)",
-            ink: "#0f172a",
-            outline: "#0f172a",
-            text: "#0f172a",
-            subText: "#64748b",
-            playerBody: "#111827",
-            playerEye: "#ffffff",
-            barBg: "#e2e8f0",
-            vignette: "rgba(120, 90, 30, 0.16)",
-          };
+      const palette = {
+        bgInner: "#fffdf4",
+        bgOuter: "#f5ecd7",
+        grid: "rgba(15, 23, 42, 0.1)",
+        ink: "#0f172a",
+        outline: "#0f172a",
+        text: "#0f172a",
+        subText: "#64748b",
+        playerBody: "#111827",
+        playerEye: "#ffffff",
+        barBg: "#e2e8f0",
+        vignette: "rgba(120, 90, 30, 0.16)",
+      };
 
       context.save();
 
@@ -1174,7 +1165,12 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         const speed = Math.hypot(bullet.vx, bullet.vy) || 1;
         const tailX = bullet.x - (bullet.vx / speed) * 16;
         const tailY = bullet.y - (bullet.vy / speed) * 16;
-        const trail = context.createLinearGradient(tailX, tailY, bullet.x, bullet.y);
+        const trail = context.createLinearGradient(
+          tailX,
+          tailY,
+          bullet.x,
+          bullet.y,
+        );
 
         trail.addColorStop(0, "rgba(245, 158, 11, 0)");
         trail.addColorStop(1, "rgba(245, 158, 11, 0.85)");
@@ -1337,7 +1333,15 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         context.lineTo(enemy.x + 8, enemy.y - enemy.radius - 5);
         context.stroke();
 
-        drawShape(enemy.x, enemy.y, enemy.radius, "circle", fill, palette.outline, 2.5);
+        drawShape(
+          enemy.x,
+          enemy.y,
+          enemy.radius,
+          "circle",
+          fill,
+          palette.outline,
+          2.5,
+        );
 
         const eyeOffset = enemy.radius * 0.35;
 
@@ -1372,7 +1376,7 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         context.arc(player.x, player.y, PLAYER_RADIUS, 0, Math.PI * 2);
         context.fillStyle = palette.playerBody;
         context.fill();
-        context.strokeStyle = dark ? "#0b1020" : "#fffdf4";
+        context.strokeStyle = "#fffdf4";
         context.lineWidth = 2.5;
         context.stroke();
 
@@ -1432,7 +1436,12 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
       // ---- HUD ----
       // XP 바
       const xpRatio = clamp(run.xp / xpForLevel(run.level), 0, 1);
-      const xpGradient = context.createLinearGradient(14, 0, WORLD_SIZE - 14, 0);
+      const xpGradient = context.createLinearGradient(
+        14,
+        0,
+        WORLD_SIZE - 14,
+        0,
+      );
 
       xpGradient.addColorStop(0, "#38bdf8");
       xpGradient.addColorStop(1, "#818cf8");
@@ -1625,11 +1634,9 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
         />
 
         {/* 보스 경고 배너 */}
-        {screen === "running" && (
-          <BossAlert runRef={runRef} />
-        )}
+        {screen === "running" && <BossAlert runRef={runRef} />}
 
-        {/* 일시정지 / 음소거 버튼 */}
+        {/* 일시정지 버튼 */}
         {(screen === "running" || screen === "paused") && (
           <div className="absolute right-2.5 top-8 z-20 flex flex-col gap-2">
             <button
@@ -1639,14 +1646,6 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
               aria-label={screen === "paused" ? "계속하기" : "일시정지"}
             >
               {screen === "paused" ? "▶" : "II"}
-            </button>
-            <button
-              type="button"
-              onClick={toggleMute}
-              className="flex h-9 w-9 items-center justify-center border-2 border-slate-950 bg-white text-sm shadow-[3px_3px_0_#0f172a] dark:border-slate-100 dark:bg-slate-800 dark:shadow-[3px_3px_0_rgba(241,245,249,0.8)]"
-              aria-label={muted ? "소리 켜기" : "소리 끄기"}
-            >
-              {muted ? "🔇" : "🔊"}
             </button>
           </div>
         )}
@@ -1660,21 +1659,22 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
             <h2 className="text-3xl font-black tracking-tight text-slate-950 dark:text-slate-100 sm:text-4xl">
               DEBUG SURVIVOR
             </h2>
-            <p className="max-w-[380px] text-sm font-bold leading-6 text-slate-600 dark:text-slate-400">
-              몰려오는 버그 🐛 를 자동 공격으로 잡고, 커밋 💎 을 모아
-              레벨업하세요. 레벨업마다 강화 3택 1! 배경의 도형들이 보스로
-              쳐들어옵니다.
-            </p>
             {bestRecord && (
               <p className="text-xs font-black text-slate-500 dark:text-slate-400">
                 🏆 BEST — {statLine(bestRecord)}
               </p>
             )}
-            <button type="button" onClick={startRun} className={primaryButtonClass}>
+            <button
+              type="button"
+              onClick={startRun}
+              className={primaryButtonClass}
+            >
               START
             </button>
             <p className="text-[0.7rem] font-bold text-slate-400 dark:text-slate-500">
-              {isCoarsePointer ? "조이스틱으로 이동" : "WASD / 방향키 이동 · P 일시정지"}
+              {isCoarsePointer
+                ? "조이스틱으로 이동"
+                : "WASD / 방향키 이동 · P 일시정지"}
             </p>
           </div>
         )}
@@ -1728,7 +1728,11 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
             <h2 className="text-2xl font-black tracking-wide text-slate-950 dark:text-slate-100">
               PAUSED
             </h2>
-            <button type="button" onClick={togglePause} className={primaryButtonClass}>
+            <button
+              type="button"
+              onClick={togglePause}
+              className={primaryButtonClass}
+            >
               RESUME
             </button>
           </div>
@@ -1740,11 +1744,7 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
             <h2 className="text-3xl font-black text-slate-950 dark:text-slate-100">
               {screen === "victory" ? "🎉 DEPLOY SUCCESS!" : "💀 GAME OVER"}
             </h2>
-            <p className="text-sm font-bold text-slate-600 dark:text-slate-400">
-              {screen === "victory"
-                ? "Legacy Code를 물리치고 무사히 배포했습니다."
-                : "버그에게 잡혔습니다…"}
-            </p>
+
             <p className="border-2 border-slate-950 bg-white px-4 py-2 text-sm font-black text-slate-950 dark:border-slate-100 dark:bg-slate-900 dark:text-slate-100">
               {statLine(lastResult)}
             </p>
@@ -1753,7 +1753,11 @@ const HomeRoguelite = ({ isDark = false, onBossEnter, onGameReset }) => {
                 🏆 BEST — {statLine(bestRecord)}
               </p>
             )}
-            <button type="button" onClick={startRun} className={primaryButtonClass}>
+            <button
+              type="button"
+              onClick={startRun}
+              className={primaryButtonClass}
+            >
               RETRY
             </button>
           </div>

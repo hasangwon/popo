@@ -1,0 +1,112 @@
+.daengharu-page {
+  --dh-bg: #ffffff;
+  --dh-text: #293c37;
+  --dh-muted: #61716a;
+  --dh-line: #e3ebe7;
+  --dh-green: #287461;
+  height: 100dvh;
+  overflow-y: auto;
+  background: var(--dh-bg);
+  color: var(--dh-text);
+  letter-spacing: 0;
+}
+
+.daengharu-page h1, .daengharu-page h2, .daengharu-page h3,
+.daengharu-page p { margin: 0; word-break: keep-all; }
+.dh-emoji { display: inline-block; font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif; font-weight: 400; line-height: 1; }
+.dh-header { position: sticky; top: 0; z-index: 10; background: var(--dh-bg); border-bottom: 1px solid var(--dh-line); }
+.dh-header-inner { max-width: 960px; margin: auto; padding: 0 28px; min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 12px 24px; }
+.dh-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 800; text-decoration: none; }
+.dh-brand .dh-emoji { font-size: 30px; }
+.dh-nav { display: flex; gap: 24px; }
+.dh-nav a { display: flex; align-items: center; min-height: 48px; border-bottom: 3px solid transparent; padding-top: 3px; font-size: 13px; font-weight: 700; color: var(--dh-muted); text-decoration: none; }
+.dh-nav a:hover, .dh-nav a[aria-current="page"] { color: var(--dh-green); border-color: #6ebca2; }
+.daengharu-page a:focus-visible { outline: 3px solid #69bfa4; outline-offset: 5px; border-radius: 3px; }
+.dh-article { max-width: 960px; margin: auto; padding: 0 28px; }
+.dh-intro { padding: 44px 0 38px; border-bottom: 1px solid var(--dh-line); }
+.dh-home .dh-intro { text-align: center; }
+.dh-welcome { position: relative; width: 260px; height: 122px; margin: 0 auto 22px; }
+.dh-mascot { font-size: 96px; position: absolute; left: 82px; top: 14px; transform-origin: 50% 85%; animation: dh-wiggle 3.5s ease-in-out infinite; }
+.dh-hello { position: absolute; right: -8px; top: 0; padding: 7px 12px; background: #fbe9ef; color: #995267; border-radius: 8px 8px 8px 0; font-size: 12px; font-weight: 700; transform: rotate(6deg); }
+.dh-paw { position: absolute; font-size: 23px; opacity: .55; }
+.dh-paw-left { left: 23px; top: 34px; transform: rotate(-25deg); }
+.dh-paw-right { right: 17px; bottom: 7px; transform: rotate(24deg); }
+.daengharu-page .dh-eyebrow { color: var(--dh-green); font-size: 12px; font-weight: 700; margin-bottom: 10px; }
+.dh-intro h1 { font-size: 38px; line-height: 1.3; font-weight: 850; }
+.dh-intro h1 > .dh-emoji { margin-left: 12px; font-size: 26px; }
+.daengharu-page .dh-intro-copy { margin-top: 16px; font-size: 16px; color: var(--dh-muted); line-height: 1.85; }
+.daengharu-page .dh-effective { margin-top: 12px; font-size: 13px; color: var(--dh-muted); }
+.dh-features { padding: 30px 0; }
+.dh-section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.dh-section-heading h2, .dh-section h2 { font-size: 19px; font-weight: 800; }
+.dh-section-heading > .dh-emoji { font-size: 22px; opacity: .55; transform: rotate(18deg); }
+.dh-feature-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.dh-feature { border: 1px solid var(--dh-line); border-radius: 8px; padding: 20px 16px; }
+.dh-feature--mint { background: #eff8f2; }
+.dh-feature--pink { background: #fff2f5; }
+.dh-feature--yellow { background: #fffbed; }
+.dh-feature--blue { background: #f0f6fc; }
+.dh-feature-icon { font-size: 30px; height: 38px; margin-bottom: 13px; }
+.dh-feature h3 { font-size: 15px; font-weight: 800; line-height: 1.6; }
+.dh-feature p { font-size: 13px; line-height: 1.8; color: var(--dh-muted); margin-top: 8px; }
+.dh-storage { display: flex; align-items: flex-start; gap: 16px; padding: 24px 0 30px; border-bottom: 1px solid var(--dh-line); }
+.dh-storage > .dh-emoji { font-size: 28px; padding-top: 3px; }
+.dh-storage h2, .dh-contact h2 { font-size: 16px; font-weight: 800; margin-bottom: 7px; }
+.dh-paragraph, .dh-bullets { color: var(--dh-muted); font-size: 15px; line-height: 1.9; }
+.dh-storage .dh-paragraph { font-size: 14px; }
+.dh-contact { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 30px 0; }
+.dh-contact a { color: var(--dh-green); font-size: 14px; text-underline-offset: 4px; }
+.dh-contact a:hover { text-decoration: underline; }
+.dh-contact > .dh-emoji { font-size: 44px; }
+.dh-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 20px 0 26px; border-top: 1px solid var(--dh-line); color: var(--dh-muted); font-size: 12px; }
+.dh-footer .dh-emoji { margin-left: 4px; }
+.dh-document { max-width: 820px; }
+.dh-document .dh-content { padding: 28px 0 40px; }
+.dh-document .dh-intro { padding-top: 44px; }
+.dh-document .dh-intro h1 { font-size: 30px; }
+.dh-section { margin-top: 30px; }
+.dh-section h2 { margin-bottom: 12px; }
+.dh-bullets { padding-left: 20px; list-style: disc; }
+.dh-bullets li + li { margin-top: 8px; }
+.dh-bullets li::marker { color: #6daa92; }
+
+@keyframes dh-wiggle {
+  0%, 65%, 100% { transform: rotate(0); }
+  73% { transform: rotate(-8deg); }
+  83% { transform: rotate(7deg); }
+  92% { transform: rotate(-4deg); }
+}
+
+.dark .daengharu-page { --dh-bg: #19221f; --dh-text: #edf4ef; --dh-muted: #b6c6bd; --dh-line: #36443c; --dh-green: #a1d9be; }
+.dark .dh-feature--mint { background: #233b2e; }
+.dark .dh-feature--pink { background: #3d2b33; }
+.dark .dh-feature--yellow { background: #373524; }
+.dark .dh-feature--blue { background: #293740; }
+.dark .dh-hello { background: #4c3340; color: #f4c4d2; }
+
+@media (max-width: 700px) {
+  .dh-header-inner { flex-direction: column; gap: 6px; padding: 16px 20px 0; }
+  .dh-nav { width: 100%; justify-content: center; gap: 24px; }
+  .dh-article { padding: 0 20px; }
+  .dh-intro { padding: 28px 0; }
+  .dh-intro h1 { font-size: 32px; }
+  .dh-feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dh-feature { padding: 18px 14px; }
+  .dh-document .dh-intro h1 { font-size: 26px; }
+  .dh-document .dh-intro h1 > .dh-emoji { font-size: 20px; }
+}
+
+@media (max-width: 360px) {
+  .dh-welcome { width: 230px; }
+  .dh-mascot { left: 67px; }
+  .dh-hello { right: 0; }
+  .dh-nav { gap: 16px; }
+  .dh-nav a { font-size: 12px; }
+  .dh-article { padding: 0 16px; }
+  .dh-feature-grid { grid-template-columns: 1fr; }
+  .dh-section-heading h2 { font-size: 17px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dh-mascot { animation: none; }
+}

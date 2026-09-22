@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ChatNavigator from "./components/portfolio/ChatNavigator";
+import DaengharuPage from "./pages/DaengharuPage";
 import { sections } from "./constants/portfolioData";
 import HomePage from "./pages/HomePage";
 import PortfolioPage from "./pages/PortfolioPage";
@@ -211,6 +212,10 @@ const App = () => {
   }, [unlockNavigation, updateActiveFromScroll]);
 
   const currentPath = getCurrentPath();
+
+  if (currentPath === "/daengharu" || currentPath.startsWith("/daengharu/")) {
+    return <DaengharuPage view={currentPath.slice("/daengharu".length) || "/"} />;
+  }
 
   if (currentPath === "/resume") {
     return <ResumePage />;

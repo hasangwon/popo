@@ -186,13 +186,34 @@ const WeatherPill = () => {
   );
 };
 
-const HomeStatusBar = () => (
-  <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-center justify-between gap-2 px-4 py-3 sm:px-6">
+/** 홈 상단의 시계·날씨. links 를 주면 날씨 밑에 점 목록으로 바로가기를 단다. */
+const HomeStatusBar = ({ links = [] }) => (
+  <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-start justify-between gap-2 px-4 py-3 sm:px-6">
     <div className="pointer-events-auto">
       <ClockPill />
     </div>
-    <div className="pointer-events-auto">
-      <WeatherPill />
+    <div className="flex flex-col items-end gap-3">
+      <div className="pointer-events-auto">
+        <WeatherPill />
+      </div>
+      {links.length > 0 && (
+        <ul className="pointer-events-auto flex flex-col items-start gap-1 rounded-xl border border-slate-950/10 bg-white/75 px-3 py-2 backdrop-blur-sm dark:border-white/10 dark:bg-slate-900/70">
+          {links.map((link) => (
+            <li key={link.href} className="pointer-events-auto">
+              <a
+                href={link.href}
+                className="flex items-center gap-1.5 text-xs font-bold text-slate-600 underline-offset-4 hover:text-slate-950 hover:underline dark:text-slate-400 dark:hover:text-slate-100"
+              >
+                <span
+                  aria-hidden="true"
+                  className="size-1 shrink-0 rounded-full bg-current"
+                />
+                {link.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   </header>
 );

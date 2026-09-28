@@ -93,7 +93,7 @@ const ResumePage = () => (
 
       <Section title="자기소개">
         {resumeIntro.map((text) => (
-          <p key={text} className="text-[1rem] leading-8 text-slate-700 dark:text-slate-300">
+          <p key={text} className="text-[1rem] leading-8 text-slate-700 dark:text-slate-300 [&+&]:mt-8">
             {text}
           </p>
         ))}

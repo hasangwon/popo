@@ -71,9 +71,15 @@ const HomePage = () => {
         ))}
       </div>
 
-      <HomeStatusBar />
+      <HomeStatusBar
+        links={[
+          { title: "이력서", href: "/resume" },
+          { title: "포트폴리오", href: "/portfolio" },
+          { title: "개발 견적 문의", href: "/sales" },
+        ]}
+      />
 
-      <section className="relative z-10 flex min-h-full items-start justify-center px-4 pb-6 pt-16 sm:px-8 sm:pt-20">
+      <section className="relative z-10 flex min-h-full items-start justify-center px-4 pb-6 pt-28 sm:px-8 sm:pt-20">
         <div className="flex w-full max-w-[640px] flex-col items-center gap-6">
           <div className="flex w-full shrink-0 flex-col items-center gap-4 text-center">
             <h1 className="relative text-[clamp(3rem,10vw,4.5rem)] font-black leading-[0.82] tracking-[-0.03em] text-slate-950 drop-shadow-[6px_6px_0_rgba(255,255,255,0.95)] dark:text-slate-100 dark:drop-shadow-[6px_6px_0_rgba(15,23,42,0.95)]">

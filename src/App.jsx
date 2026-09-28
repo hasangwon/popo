@@ -5,6 +5,7 @@ import { sections } from "./constants/portfolioData";
 import HomePage from "./pages/HomePage";
 import PortfolioPage from "./pages/PortfolioPage";
 import ResumePage from "./pages/ResumePage";
+import SalesPage from "./pages/SalesPage";
 import { Analytics } from "@vercel/analytics/react";
 
 const initialMessages = [
@@ -215,6 +216,11 @@ const App = () => {
 
   if (currentPath === "/daengharu" || currentPath.startsWith("/daengharu/")) {
     return <DaengharuPage view={currentPath.slice("/daengharu".length) || "/"} />;
+  }
+
+  // 작업 의뢰 소개. /sails 는 오타로 들어온 주소도 받는다.
+  if (currentPath === "/sales" || currentPath === "/sails") {
+    return <SalesPage />;
   }
 
   if (currentPath === "/resume") {

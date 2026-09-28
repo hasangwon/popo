@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/sales", "destination": "/sales/index.html" },
+    { "source": "/sails", "destination": "/sails/index.html" },
     {
       "source": "/(.*)",
       "destination": "/"

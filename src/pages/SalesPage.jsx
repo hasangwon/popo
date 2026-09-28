@@ -192,11 +192,11 @@ const SalesPage = () => {
           <div className="mt-10 grid overflow-hidden rounded-2xl border border-neutral-200 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div className="p-7 sm:p-9">
               <div>
-                <p>
-                  <span className="block text-xl font-bold text-neutral-900 sm:text-2xl">
+                <p className="text-base leading-7 text-neutral-600 sm:text-[17px] sm:leading-8">
+                  <span className="block font-bold">
                     안녕하세요, 하상원입니다.
                   </span>
-                  <span className="mt-1 block text-neutral-600 sm:text-lg">
+                  <span className="block">
                     저는 5년 이상 현직 프론트엔드 개발자로 일하고 있습니다.
                   </span>
                 </p>

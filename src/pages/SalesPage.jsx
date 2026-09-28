@@ -38,10 +38,10 @@ const services = [
 const works = [
   {
     title: "댕하루 관리자용",
-    kind: "반려견 호텔·데이케어 매장용 iOS 앱",
+    kind: "반려견 호텔 회원관 관리 앱 및 구글 시트",
     body: [
       "강아지 방문 기록과 회원권 잔여 횟수를 관리하는 매장 직원용 앱입니다. 날짜별 메모에 강아지 이름을 적고 확정하면 방문이 기록되고 회원권 횟수가 차감됩니다.",
-      "저장소와 서버 비용을 들이지 않기 위해, 매장에서 원래 쓰던 엑셀과 비슷한 형태의 구글 스프레드시트를 그대로 저장소로 썼습니다. 따로 서버나 데이터베이스가 없고, 사장님은 지금처럼 시트를 열어 기록을 봅니다.",
+      "저장소와 서버 비용을 들이지 않기 위해, 매장에서 원래 쓰던 엑셀과 비슷한 형태의 앱스크립트를 활용해 구글 스프레드시트를 그대로 저장소로 썼습니다. 따로 서버나 데이터베이스가 없고, 고객님은 기존처럼 시트를 열어 기록을 봅니다.",
       "기획부터 iOS 앱, 구글 시트 연동, App Store 출시까지 혼자 맡았습니다.",
     ],
     image: "/project-images/daengharu/1-calendar.jpg",
@@ -49,40 +49,19 @@ const works = [
     link: { href: "/daengharu", label: "앱 소개" },
   },
   {
-    title: "한컴오피스 EditUp",
-    kind: "한글 문서 AI 교열 애드온",
+    title: "일정 달력 앱",
+    kind: "음력·공휴일 지원 iOS 앱·홈 위젯",
     body: [
-      "한글 문서 안에서 AI가 고친 문장을 원문과 비교하고, 필요한 것만 골라 문서에 반영하는 애드온입니다.",
-      "한글 파일에서 내부적으로 사용하는 HWP API의 가이드를 받아 읽고 해당 방식에 맞게 개발하였습니다.",
-      "업스테이지(Upstage)의 교열 API를 연동해 만들었고, 설치 파일(exe)로 한컴 사이트에서 배포됐습니다.",
+      "음력과 한국 공휴일이 함께 보이는 달력 앱입니다. 음력 생일·제사 같은 매년 기념일을 한 번 등록하면 해마다 양력으로 환산해 표시하고, 홈 화면 위젯으로 이번 달 일정을 봅니다.",
+      "대체공휴일은 2027년까지 관보 기준으로 넣고 이후 연도는 현행 규정으로 자동 계산합니다. 광고·결제·개인정보 수집이 없습니다.",
+      "직접 기획·개발하여 App Store에 출시하고 운영 중입니다.",
     ],
-    image: "/project-images/hancom/overview.webp",
-    imageAlt: "EditUp AI 교열 화면",
-  },
-  {
-    title: "키움증권 영웅문 AI 업무 챗봇",
-    kind: "증권사 앱 안의 AI 챗봇",
-    body: [
-      "키움증권 영웅문 앱 안에서 동작하는 AI 챗봇입니다. 계좌 정보, 현재가·지수·환율, 공모주 조회 같은 업무 시나리오 화면과 상담 입력 폼, 차트 메시지를 만들었습니다.",
-      "갤럭시 폴드처럼 폭이 좁은 기기와 구형 iPhone에서도 깨지지 않게 맞췄습니다.",
-    ],
-    image: "/project-images/kiwoom/home.webp",
-    imageAlt: "키움증권 영웅문 챗봇 화면",
+    image: "/project-images/plan-widget/1-calendar.jpg",
+    imageAlt: "일정 달력 앱 월 달력 화면",
     link: {
-      href: "https://www.youtube.com/watch?v=3r6fSKLeTtQ",
-      label: "소개 영상",
+      href: "https://apps.apple.com/kr/app/id6804972538",
+      label: "App Store 보기",
     },
-  },
-  {
-    title: "행사 웹사이트",
-    kind: "행사용 단일·다중 페이지 사이트",
-    body: [
-      "행사 성격에 맞춰 한 페이지짜리 안내 사이트부터 여러 메뉴를 갖춘 사이트까지 만듭니다.",
-      "서울특별시가 주최한 2025 서울전통춤문화제 공식 사이트는 축제 소개·일정·장소, 프로그램·출연진, 공지사항과 자료 아카이브로 구성했습니다.",
-    ],
-    image: "/project-images/moveseoul/home.jpg",
-    imageAlt: "2025 서울전통춤문화제 사이트 화면",
-    link: { href: "https://www.moveseoul.kr/", label: "사이트 보기" },
   },
   {
     title: "단석가 온라인몰 운영·개편",
@@ -99,15 +78,42 @@ const works = [
     },
   },
   {
-    title: "플링캐스트 플레이챗",
-    kind: "AI 캐릭터 챗 · 인터랙티브 스토리",
+    title: "행사 웹사이트",
+    kind: "행사용 단일·다중 페이지 사이트",
     body: [
-      "오디오 드라마 플랫폼 플링의 AI 인터랙티브 스토리 서비스입니다. 이용자가 AI 캐릭터와 실시간으로 대화하며 이야기를 진행하고, 대화 흐름에 맞춰 효과음과 오디오가 함께 재생됩니다.",
-      "현재 플링캐스트에서 플레이챗 웹 개발을 전담하고 있습니다.",
+      "행사 성격에 맞춰 한 페이지짜리 안내 사이트부터 여러 메뉴를 갖춘 사이트까지 만듭니다.",
+      "서울특별시가 주최한 2025 서울전통춤문화제 공식 사이트는 축제 소개·일정·장소, 프로그램·출연진, 공지사항과 자료 아카이브로 구성했습니다.",
     ],
-    image: "/project-images/playchat/home.jpg",
-    imageAlt: "플레이챗 화면",
-    link: { href: "https://www.plingcast.com/", label: "서비스 보기" },
+    image: "/project-images/moveseoul/home.jpg",
+    imageAlt: "2025 서울전통춤문화제 사이트 화면",
+    link: { href: "https://www.moveseoul.kr/", label: "사이트 보기" },
+  },
+  {
+    title: "한컴오피스 EditUp",
+    kind: "한글 문서 AI 교열 애드온",
+    body: [
+      "한글 문서 안에서 AI가 고친 문장을 원문과 비교하고, 필요한 것만 골라 문서에 반영하는 애드온입니다.",
+      "한글 파일에서 내부적으로 사용하는 HWP API의 가이드를 받아 읽고 해당 방식에 맞게 개발하였습니다.",
+      "업스테이지(Upstage)의 교열 API를 연동해 만들었고, 설치 파일(exe)로 한컴 사이트에서 배포됐습니다.",
+      "젠틀파이 재직 중 담당한 프로젝트로, 고객사인 한컴과 직접 소통하며 개발했습니다.",
+    ],
+    image: "/project-images/hancom/overview.webp",
+    imageAlt: "EditUp AI 교열 화면",
+  },
+  {
+    title: "키움증권 영웅문 AI 업무 챗봇",
+    kind: "증권사 앱 안의 AI 챗봇",
+    body: [
+      "키움증권 영웅문 앱 안에서 동작하는 AI 챗봇입니다. 계좌 정보, 현재가·지수·환율, 공모주 조회 같은 업무 시나리오 화면과 상담 입력 폼, 차트 메시지를 만들었습니다.",
+      "갤럭시 폴드처럼 폭이 좁은 기기와 구형 iPhone에서도 깨지지 않게 맞췄습니다.",
+      "젠틀파이 재직 중 담당한 프로젝트로, 고객사인 키움증권과 직접 소통하며 개발했습니다.",
+    ],
+    image: "/project-images/kiwoom/home.webp",
+    imageAlt: "키움증권 영웅문 챗봇 화면",
+    link: {
+      href: "https://www.youtube.com/watch?v=3r6fSKLeTtQ",
+      label: "소개 영상",
+    },
   },
 ];
 
@@ -183,31 +189,70 @@ const SalesPage = () => {
           <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
             개발 견적 문의
           </h1>
-          <p className="mt-6 text-lg leading-8 text-neutral-600">
-            안녕하세요, 하상원입니다.
-            <br />
-            저는 5년 이상 현직 프론트엔드 개발자로 일하고 있습니다.
-            <br />
-            <br />
-            한 페이지짜리 행사 사이트부터 개인사업자의 쇼핑몰 운영, 매장 관리
-            앱, 대기업 서비스의 기능 개발까지 다양하게 맡아 개발·운영하고
-            있습니다.
-            <br />
-            <br />
-            의뢰받은 일은 첫 상담부터 개발, 배포, 이후 유지보수까지 직접
-            진행합니다. 개발 용어를 몰라도 됩니다. 필요한 것을 말로 설명해
-            주시면 제가 정리해서 방법을 제안하고 만듭니다.
-          </p>
-          <div className="mt-8 flex w-full items-center justify-end gap-4">
-            <span className="text-base text-neutral-500">
-              이메일: {SALES_EMAIL}
-            </span>
-            <a
-              className="text-lg font-semibold text-blue-600 underline underline-offset-4 hover:text-blue-800"
-              href={MAIL}
-            >
-              견적 문의하기
-            </a>
+          <div className="mt-10 grid overflow-hidden rounded-2xl border border-neutral-200 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="p-7 sm:p-9">
+              <div>
+                <p>
+                  <span className="block text-xl font-bold text-neutral-900 sm:text-2xl">
+                    안녕하세요, 하상원입니다.
+                  </span>
+                  <span className="mt-1 block text-neutral-600 sm:text-lg">
+                    저는 5년 이상 현직 프론트엔드 개발자로 일하고 있습니다.
+                  </span>
+                </p>
+              </div>
+              <div className="mt-7 space-y-4 border-t border-neutral-200 pt-7 text-base leading-7 text-neutral-600 sm:text-[17px] sm:leading-8">
+                <p>
+                  한 페이지짜리 행사 사이트부터, 개인사업자의 쇼핑몰 운영, 매장
+                  관리 앱, 대기업 서비스의 기능 개발까지 다양하게 맡아
+                  개발/운영하고 있습니다.
+                </p>
+                <p>
+                  의뢰받은 일은 첫 상담부터 개발, 배포, 이후 유지보수까지 직접
+                  진행합니다. 개발 용어를 몰라도 됩니다.
+                  <br />
+                  필요한 것을 말로 설명해 주시면 제가 정리해서 방법을 제안하고
+                  만듭니다.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col justify-between gap-8 border-t border-neutral-200 bg-neutral-50 p-7 sm:p-9 lg:border-t-0 lg:border-l">
+              <div>
+                <p className="flex items-center gap-2 text-sm text-neutral-500">
+                  <svg
+                    aria-hidden="true"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    className="size-4"
+                  >
+                    <rect x="2.5" y="4.5" width="15" height="11" rx="2" />
+                    <path d="m3 5.5 7 5 7-5" />
+                  </svg>
+                  이메일
+                </p>
+                <p className="mt-2 break-all text-lg font-semibold text-neutral-900">
+                  {SALES_EMAIL}
+                </p>
+              </div>
+              <a
+                className="group inline-flex items-center gap-1.5 self-start text-lg font-semibold text-blue-600 underline underline-offset-4 hover:text-blue-800"
+                href={MAIL}
+              >
+                견적 문의하기
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  className="size-4 transition-transform group-hover:translate-x-0.5"
+                >
+                  <path d="M4 10h11m-4-4 4 4-4 4" />
+                </svg>
+              </a>
+            </div>
           </div>
         </header>
 

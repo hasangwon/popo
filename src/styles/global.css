@@ -67,6 +67,17 @@
   }
 }
 
+@keyframes cardRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes introTrackMove {
   0% {
     transform: translateX(0);

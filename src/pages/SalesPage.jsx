@@ -44,8 +44,12 @@ const works = [
       "저장소와 서버 비용을 들이지 않기 위해, 매장에서 원래 쓰던 엑셀과 비슷한 형태의 앱스크립트를 활용해 구글 스프레드시트를 그대로 저장소로 썼습니다. 따로 서버나 데이터베이스가 없고, 고객님은 기존처럼 시트를 열어 기록을 봅니다.",
       "기획부터 iOS 앱, 구글 시트 연동, App Store 출시까지 혼자 맡았습니다.",
     ],
-    image: "/project-images/daengharu/1-calendar.jpg",
-    imageAlt: "댕하루 관리자용 달력 화면",
+    images: [
+      "/project-images/daengharu/1-calendar.jpg",
+      "/project-images/daengharu/2-memo.jpg",
+      "/project-images/daengharu/3-purchase.jpg",
+    ],
+    imageAlt: "댕하루 관리자용 달력·메모·회원권 등록 화면",
     link: { href: "/daengharu", label: "앱 소개" },
   },
   {
@@ -56,8 +60,12 @@ const works = [
       "대체공휴일은 2027년까지 관보 기준으로 넣고 이후 연도는 현행 규정으로 자동 계산합니다. 광고·결제·개인정보 수집이 없습니다.",
       "직접 기획·개발하여 App Store에 출시하고 운영 중입니다.",
     ],
-    image: "/project-images/plan-widget/1-calendar.jpg",
-    imageAlt: "일정 달력 앱 월 달력 화면",
+    images: [
+      "/project-images/plan-widget/1-calendar.jpg",
+      "/project-images/plan-widget/2-dark.jpg",
+      "/project-images/plan-widget/3-anniversary.jpg",
+    ],
+    imageAlt: "일정 달력 앱 월 달력·다크 모드·기념일 화면",
     link: {
       href: "https://apps.apple.com/kr/app/id6804972538",
       label: "App Store 보기",
@@ -178,6 +186,71 @@ const useSalesHead = () => {
   }, []);
 };
 
+/** 소개글 옆 명함. 실물 명함 비율(90×50mm)에 종이 결을 입히고, 올리면 빛이 한 번 스친다. */
+const PAPER_NOISE =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+
+const CardName = () => (
+  <div>
+    <p className="flex items-baseline gap-[5px]">
+      <span className="text-[19px] font-bold tracking-[-0.01em]">하상원</span>
+      <span className="text-[11.5px] font-medium text-[#777]">프로</span>
+    </p>
+    <p className="mt-0.5 text-[10.5px] tracking-[0.02em] text-[#8a8a8a]">
+      Ha Sangwon
+    </p>
+  </div>
+);
+
+const CardRole = ({ className = "" }) => (
+  <p
+    className={`text-[9px] font-semibold uppercase tracking-[0.22em] text-[#2456e8] ${className}`}
+  >
+    Product Engineer
+  </p>
+);
+
+const CardContact = () => (
+  <dl className="grid grid-cols-[auto_1fr] gap-x-[9px] gap-y-[3px] whitespace-nowrap text-[10.5px] text-[#333]">
+    <dt className="self-center text-[9px] font-bold tracking-[0.08em] text-[#aaa]">
+      E
+    </dt>
+    <dd>{SALES_EMAIL}</dd>
+    <dt className="self-center text-[9px] font-bold tracking-[0.08em] text-[#aaa]">
+      W
+    </dt>
+    <dd>hasangwon.com</dd>
+  </dl>
+);
+
+const CardPaper = ({ children }) => (
+  <div className="group relative mx-auto aspect-[9/5] w-full max-w-[340px] animate-[cardRise_0.6s_cubic-bezier(0.2,0.7,0.2,1)_both] overflow-hidden rounded-[3px] bg-white text-[#1c1c1c] shadow-[0_0_0_0.5px_rgba(0,0,0,0.07),0_1px_1px_rgba(0,0,0,0.05),0_3px_6px_-1px_rgba(0,0,0,0.07),0_16px_30px_-14px_rgba(0,0,0,0.22)] lg:max-w-none">
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 opacity-55 mix-blend-multiply"
+      style={{ backgroundImage: PAPER_NOISE }}
+    />
+    <span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,rgba(0,0,0,0)_38%,rgba(0,0,0,0.05)_50%,rgba(0,0,0,0)_62%)] bg-[length:250%_100%] bg-[position:150%_0] transition-[background-position] duration-900 ease-out group-hover:bg-[position:-50%_0]"
+    />
+    <div className="relative flex h-full flex-col justify-between px-6 py-[22px]">
+      {children}
+    </div>
+  </div>
+);
+
+/** 직함 위 · 이름과 연락처 아래 양끝 */
+const BusinessCard = () => (
+  <CardPaper>
+    <CardRole />
+    <div className="flex items-end justify-between gap-3">
+      <CardName />
+      <CardContact />
+    </div>
+  </CardPaper>
+);
+
 /** hasangwon.com/sales — 개발 견적 문의 페이지. 포트폴리오와 별개다. */
 const SalesPage = () => {
   useSalesHead();
@@ -189,7 +262,7 @@ const SalesPage = () => {
           <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
             개발 견적 문의
           </h1>
-          <div className="mt-10 grid overflow-hidden rounded-2xl border border-neutral-200 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="mt-10 grid overflow-hidden rounded-2xl border border-neutral-200 lg:grid-cols-[minmax(0,1fr)_380px]">
             <div className="p-7 sm:p-9">
               <div>
                 <p className="text-base leading-7 text-neutral-600 sm:text-[17px] sm:leading-8">
@@ -216,41 +289,13 @@ const SalesPage = () => {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col justify-between gap-8 border-t border-neutral-200 bg-neutral-50 p-7 sm:p-9 lg:border-t-0 lg:border-l">
-              <div>
-                <p className="flex items-center gap-2 text-sm text-neutral-500">
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="size-4"
-                  >
-                    <rect x="2.5" y="4.5" width="15" height="11" rx="2" />
-                    <path d="m3 5.5 7 5 7-5" />
-                  </svg>
-                  이메일
-                </p>
-                <p className="mt-2 break-all text-lg font-semibold text-neutral-900">
-                  {SALES_EMAIL}
-                </p>
-              </div>
+            <div className="flex flex-col justify-between gap-8 border-t border-neutral-200 bg-neutral-50 p-7 sm:p-9 lg:border-t-0 lg:border-l lg:p-7">
+              <BusinessCard />
               <a
-                className="group inline-flex items-center gap-1.5 self-start text-lg font-semibold text-blue-600 underline underline-offset-4 hover:text-blue-800"
+                className="block rounded-lg bg-neutral-900 px-5 py-3 text-center text-base font-semibold text-white transition-colors hover:bg-neutral-700"
                 href={MAIL}
               >
                 견적 문의하기
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 20 20"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  className="size-4 transition-transform group-hover:translate-x-0.5"
-                >
-                  <path d="M4 10h11m-4-4 4 4-4 4" />
-                </svg>
               </a>
             </div>
           </div>
@@ -286,12 +331,26 @@ const SalesPage = () => {
                 className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200"
               >
                 <div className="flex h-64 items-center justify-center bg-neutral-100 p-5">
-                  <img
-                    className="max-h-full max-w-full rounded-md object-contain shadow-sm"
-                    src={work.image}
-                    alt={work.imageAlt}
-                    loading="lazy"
-                  />
+                  {work.images ? (
+                    <div className="flex h-full items-center justify-center gap-3">
+                      {work.images.map((src, i) => (
+                        <img
+                          key={src}
+                          className="h-full w-auto rounded-md object-contain shadow-sm"
+                          src={src}
+                          alt={i === 0 ? work.imageAlt : ""}
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <img
+                      className="max-h-full max-w-full rounded-md object-contain shadow-sm"
+                      src={work.image}
+                      alt={work.imageAlt}
+                      loading="lazy"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-1 flex-col p-6 sm:p-7">
                   <p className="text-sm text-neutral-500">{work.kind}</p>
@@ -336,7 +395,7 @@ const SalesPage = () => {
           <p className="mt-2 text-sm text-neutral-500">이메일 {SALES_EMAIL}</p>
         </section>
 
-        <footer className="mt-16 text-sm text-neutral-400">
+        <footer className="px-3 mt-16 text-sm text-neutral-400">
           © 2026 하상원
         </footer>
       </div>

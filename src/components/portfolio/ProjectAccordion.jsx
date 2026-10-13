@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 import DotList from "../common/DotList";
 import TagList from "../common/TagList";
-
-const getPublicAssetUrl = (src) =>
-  src?.startsWith("/") ? `${import.meta.env.BASE_URL}${src.slice(1)}` : src;
+import { getPublicAssetUrl } from "../../utils/getPublicAssetUrl";
 
 const ProjectInfoBlock = ({ emphasizedItem, items, title }) => {
   if (!items?.length) return null;

@@ -158,3 +158,20 @@
 .banner-slide {
   animation: bannerSlide 2.2s ease both;
 }
+
+@keyframes dhWiggle {
+  0%,
+  65%,
+  100% {
+    transform: rotate(0);
+  }
+  73% {
+    transform: rotate(-8deg);
+  }
+  83% {
+    transform: rotate(7deg);
+  }
+  92% {
+    transform: rotate(-4deg);
+  }
+}

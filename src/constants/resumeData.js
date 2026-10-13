@@ -1,11 +1,8 @@
+import { companies, profile } from "./portfolioData";
+
 export const resumeProfile = {
-  name: "하상원",
-  role: "Frontend Developer",
-  experience: "약 4년 7개월",
+  ...profile,
   portfolio: "https://hasangwon.com/portfolio",
-  email: "305243@naver.com",
-  blog: "https://bitcoins.tistory.com",
-  github: "https://github.com/hasangwon",
   photo: "/profile/hasangwon.jpg",
 };
 
@@ -29,18 +26,13 @@ export const resumeSkillGroups = [
   "Recharts",
 ];
 
-export const resumeCompanies = [
-  {
-    name: "플링캐스트",
-    period: "2026.08 ~ 현재",
-    role: "프론트엔드 개발자",
+// 이력서용 회사 소개. 회사명·기간·역할은 포트폴리오 companies 를 그대로 쓴다.
+const resumeCompanyDetails = {
+  plingcast: {
     summary: "",
     bullets: [],
   },
-  {
-    name: "젠틀파이",
-    period: "2024.06 ~ 2026.07",
-    role: "챗봇 빌더/SDK 및 고객사 챗봇 프론트엔드",
+  gentlepie: {
     summary:
       "챗봇 빌더와 고객사 챗봇 프론트엔드를 개발했습니다. 버블잇 Admin/SDK, 통계, 지식 업로드 기능을 유지보수했고, 키움증권, 식약처, LG HVAC, 애터미, 설해원 등 고객사 챗봇 UI를 구현했습니다.",
     bullets: [
@@ -50,10 +42,7 @@ export const resumeCompanies = [
       "모노레포 구조 관리, 중복 컴포넌트 분리, 이미지 최적화, 미사용 라이브러리 제거",
     ],
   },
-  {
-    name: "벳플럭스",
-    period: "2022.08 ~ 2024.01",
-    role: "동물병원 웹 솔루션 늘펫 프론트엔드 전담",
+  vetflux: {
     summary:
       "동물병원 웹 솔루션 늘펫의 프론트엔드를 전담했습니다. 메신저, 예약, 고객 관리, 설문, CTI, 알림톡/웹푸시 등 병원 데스크 운영에 필요한 SaaS 기능을 개발했고, Firebase와 Nest.js 일부 백엔드 기능도 함께 다뤘습니다.",
     bullets: [
@@ -63,10 +52,7 @@ export const resumeCompanies = [
       "세종텔레콤 CTI 연동과 저사양 병원 데스크 PC 환경의 리스트 렌더링 최적화",
     ],
   },
-  {
-    name: "농업회사법인이에프시",
-    period: "2021.04 ~ 2022.01",
-    role: "쇼핑몰 웹 서비스 프론트엔드 / 스크래핑 자동화",
+  efc: {
     summary:
       "쇼핑몰 웹 서비스 초기 화면을 React 기반으로 개발하고, 웹 스크래핑 프로그램 및 배치 자동화 유지보수에 참여했습니다.",
     bullets: [
@@ -74,7 +60,14 @@ export const resumeCompanies = [
       "BeautifulSoup 기반 웹 스크래핑 프로그램 개발 및 배치 자동화 유지보수",
     ],
   },
-];
+};
+
+export const resumeCompanies = companies.map(({ id, name, period, role }) => ({
+  name,
+  period,
+  role,
+  ...resumeCompanyDetails[id],
+}));
 
 export const resumeProjects = [
   {

@@ -14,9 +14,7 @@ import {
   resumeProjects,
   resumeSkillGroups,
 } from "../constants/resumeData";
-
-const getPublicAssetUrl = (src) =>
-  src?.startsWith("/") ? `${import.meta.env.BASE_URL}${src.slice(1)}` : src;
+import { getPublicAssetUrl } from "../utils/getPublicAssetUrl";
 
 const getProjectSortValue = (period) => {
   const matches = [...period.matchAll(/(\d{4})\.(\d{2})/g)];

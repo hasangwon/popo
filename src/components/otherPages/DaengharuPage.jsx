@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import "./DaengharuPage.css";
 
 const APP_NAME = "댕하루달력";
 const CONTACT = "daengha23@gmail.com";
@@ -11,23 +10,35 @@ const links = [
   { href: "/daengharu/terms", label: "서비스 약관", view: "/terms" },
 ];
 
+const featureColors = {
+  mint: "bg-[#eff8f2] dark:bg-[#233b2e]",
+  pink: "bg-[#fff2f5] dark:bg-[#3d2b33]",
+  yellow: "bg-[#fffbed] dark:bg-[#373524]",
+  blue: "bg-[#f0f6fc] dark:bg-[#293740]",
+};
+
 const Emoji = ({ children, className = "" }) => (
-  <span aria-hidden="true" className={`dh-emoji ${className}`}>{children}</span>
+  <span
+    aria-hidden="true"
+    className={`inline-block font-['Apple_Color_Emoji','Segoe_UI_Emoji',sans-serif] font-normal leading-none ${className}`}
+  >
+    {children}
+  </span>
 );
 
 const Section = ({ title, children }) => (
-  <section className="dh-section">
-    <h2>{title}</h2>
+  <section className="mt-[30px]">
+    <h2 className="mb-3 text-[19px] font-extrabold">{title}</h2>
     <div>{children}</div>
   </section>
 );
 
-const Paragraph = ({ children }) => (
-  <p className="dh-paragraph">{children}</p>
+const Paragraph = ({ children, className = "" }) => (
+  <p className={`text-[15px] leading-[1.9] text-[#61716a] dark:text-[#b6c6bd] ${className}`}>{children}</p>
 );
 
 const Bullets = ({ items }) => (
-  <ul className="dh-bullets">
+  <ul className="list-disc space-y-2 pl-5 text-[15px] leading-[1.9] text-[#61716a] marker:text-[#6daa92] dark:text-[#b6c6bd]">
     {items.map((item) => (
       <li key={item}>{item}</li>
     ))}
@@ -36,42 +47,52 @@ const Bullets = ({ items }) => (
 
 const HomeContent = () => (
   <>
-    <section className="dh-features" aria-labelledby="dh-features-title">
-      <div className="dh-section-heading">
-        <h2 id="dh-features-title">댕댕이의 하루를 차곡차곡</h2>
-        <Emoji>🐾</Emoji>
+    <section className="py-[30px]" aria-labelledby="dh-features-title">
+      <div className="mb-[18px] flex items-center justify-between">
+        <h2 id="dh-features-title" className="text-[19px] font-extrabold max-[360px]:text-[17px]">
+          댕댕이의 하루를 차곡차곡
+        </h2>
+        <Emoji className="rotate-[18deg] text-[22px] opacity-55">🐾</Emoji>
       </div>
-      <div className="dh-feature-grid">
+      <div className="grid grid-cols-4 gap-3 max-[700px]:grid-cols-2 max-[360px]:grid-cols-1">
         {[
           { emoji: "🐶", title: "오늘은 누가 왔을까?", text: "세로 스크롤 월 달력에서 날짜별로 방문한 강아지를 확인해요.", color: "mint" },
           { emoji: "🐾", title: "다녀간 날은 콕!", text: "날짜 메모장에 이름을 적고 확정하면 회원권 잔여 횟수가 자동으로 차감돼요.", color: "pink" },
           { emoji: "🦴", title: "다음 만남도 잊지 않게", text: "5회·10회·20회 등 회원권을 등록하고 남은 횟수와 만료일을 살펴봐요.", color: "yellow" },
           { emoji: "🔑", title: "우리 선생님만 들어와요", text: "Google 계정으로 로그인하고, 허용된 운영자만 기록에 접근해요.", color: "blue" },
         ].map((feature) => (
-          <div key={feature.title} className={`dh-feature dh-feature--${feature.color}`}>
-            <Emoji className="dh-feature-icon">{feature.emoji}</Emoji>
-            <h3>{feature.title}</h3>
-            <p>{feature.text}</p>
+          <div
+            key={feature.title}
+            className={`rounded-lg border border-[#e3ebe7] px-4 py-5 dark:border-[#36443c] max-[700px]:px-3.5 max-[700px]:py-[18px] ${featureColors[feature.color]}`}
+          >
+            <Emoji className="mb-[13px] h-[38px] text-[30px]">{feature.emoji}</Emoji>
+            <h3 className="text-[15px] font-extrabold leading-[1.6]">{feature.title}</h3>
+            <p className="mt-2 text-[13px] leading-[1.8] text-[#61716a] dark:text-[#b6c6bd]">{feature.text}</p>
           </div>
         ))}
       </div>
     </section>
-    <section className="dh-storage">
-      <Emoji>📒</Emoji>
+    <section className="flex items-start gap-4 border-b border-[#e3ebe7] pt-6 pb-[30px] dark:border-[#36443c]">
+      <Emoji className="pt-[3px] text-[28px]">📒</Emoji>
       <div>
-        <h2>소중한 기록은 운영자의 공간에</h2>
-        <Paragraph>
+        <h2 className="mb-[7px] text-base font-extrabold">소중한 기록은 운영자의 공간에</h2>
+        <Paragraph className="text-sm">
           기록은 운영자 소유의 Google 스프레드시트에 저장돼요.
           별도의 서버나 데이터베이스는 두지 않아요.
         </Paragraph>
       </div>
     </section>
-    <section className="dh-contact">
+    <section className="flex items-center justify-between gap-4 py-[30px]">
       <div>
-        <h2>궁금한 게 있으신가요?</h2>
-        <a href={`mailto:${CONTACT}`}>{CONTACT} <span aria-hidden="true">↗</span></a>
+        <h2 className="mb-[7px] text-base font-extrabold">궁금한 게 있으신가요?</h2>
+        <a
+          className="text-sm text-[#287461] underline-offset-4 hover:underline dark:text-[#a1d9be]"
+          href={`mailto:${CONTACT}`}
+        >
+          {CONTACT} <span aria-hidden="true">↗</span>
+        </a>
       </div>
-      <Emoji>🐕</Emoji>
+      <Emoji className="text-[44px]">🐕</Emoji>
     </section>
   </>
 );
@@ -185,16 +206,26 @@ const DaengharuPage = ({ view = "/" }) => {
   }, [view, current.title]);
 
   return (
-    <main className="daengharu-page">
-      <header className="dh-header">
-        <div className="dh-header-inner">
-          <a className="dh-brand" href="/daengharu"><Emoji>🐶</Emoji>{APP_NAME}</a>
-          <nav className="dh-nav" aria-label="댕하루달력 메뉴">
+    <main className="h-[100dvh] overflow-y-auto bg-white tracking-normal break-keep text-[#293c37] dark:bg-[#19221f] dark:text-[#edf4ef]">
+      <header className="sticky top-0 z-10 border-b border-[#e3ebe7] bg-white dark:border-[#36443c] dark:bg-[#19221f]">
+        <div className="mx-auto flex min-h-[76px] max-w-[960px] items-center justify-between gap-x-6 gap-y-3 px-7 max-[700px]:flex-col max-[700px]:gap-1.5 max-[700px]:px-5 max-[700px]:pt-4 max-[700px]:pb-0">
+          <a
+            className="inline-flex items-center gap-2.5 rounded-[3px] text-lg font-extrabold no-underline focus-visible:outline-3 focus-visible:outline-offset-[5px] focus-visible:outline-[#69bfa4]"
+            href="/daengharu"
+          >
+            <Emoji className="text-[30px]">🐶</Emoji>
+            {APP_NAME}
+          </a>
+          <nav
+            className="flex gap-6 max-[700px]:w-full max-[700px]:justify-center max-[360px]:gap-4"
+            aria-label="댕하루달력 메뉴"
+          >
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 aria-current={link.view === (isHome ? "/" : view) ? "page" : undefined}
+                className="flex min-h-12 items-center rounded-[3px] border-b-[3px] border-transparent pt-[3px] text-[13px] font-bold text-[#61716a] no-underline hover:border-[#6ebca2] hover:text-[#287461] focus-visible:outline-3 focus-visible:outline-offset-[5px] focus-visible:outline-[#69bfa4] aria-[current=page]:border-[#6ebca2] aria-[current=page]:text-[#287461] dark:text-[#b6c6bd] dark:hover:text-[#a1d9be] dark:aria-[current=page]:text-[#a1d9be] max-[360px]:text-xs"
               >
                 {link.label}
               </a>
@@ -203,28 +234,45 @@ const DaengharuPage = ({ view = "/" }) => {
         </div>
       </header>
 
-      <article className={`dh-article ${isHome ? "dh-home" : "dh-document"}`}>
-        <div className="dh-intro">
+      <article
+        className={`mx-auto px-7 max-[700px]:px-5 max-[360px]:px-4 ${isHome ? "max-w-[960px]" : "max-w-[820px]"}`}
+      >
+        <div
+          className={`border-b border-[#e3ebe7] pt-11 pb-[38px] dark:border-[#36443c] max-[700px]:py-7 ${isHome ? "text-center" : ""}`}
+        >
           {isHome && (
-            <div className="dh-welcome" aria-hidden="true">
-              <Emoji className="dh-paw dh-paw-left">🐾</Emoji>
-              <Emoji className="dh-mascot">🐶</Emoji>
-              <span className="dh-hello">반가워요, 멍!</span>
-              <Emoji className="dh-paw dh-paw-right">🐾</Emoji>
+            <div className="relative mx-auto mb-[22px] h-[122px] w-[260px] max-[360px]:w-[230px]" aria-hidden="true">
+              <Emoji className="absolute top-[34px] left-[23px] -rotate-[25deg] text-[23px] opacity-55">🐾</Emoji>
+              <Emoji className="absolute top-[14px] left-[82px] origin-[50%_85%] animate-[dhWiggle_3.5s_ease-in-out_infinite] text-[96px] max-[360px]:left-[67px]">
+                🐶
+              </Emoji>
+              <span className="absolute top-0 -right-2 rotate-6 rounded-[8px_8px_8px_0] bg-[#fbe9ef] px-3 py-[7px] text-xs font-bold text-[#995267] dark:bg-[#4c3340] dark:text-[#f4c4d2] max-[360px]:right-0">
+                반가워요, 멍!
+              </span>
+              <Emoji className="absolute right-[17px] bottom-[7px] rotate-[24deg] text-[23px] opacity-55">🐾</Emoji>
             </div>
           )}
-          <p className="dh-eyebrow">{current.eyebrow}</p>
-          <h1>{current.title}{!isHome && <Emoji>🐾</Emoji>}</h1>
+          <p className="mb-2.5 text-xs font-bold text-[#287461] dark:text-[#a1d9be]">{current.eyebrow}</p>
+          <h1
+            className={`leading-[1.3] font-[850] ${isHome ? "text-[38px] max-[700px]:text-[32px]" : "text-[30px] max-[700px]:text-[26px]"}`}
+          >
+            {current.title}
+            {!isHome && <Emoji className="ml-3 text-[26px] max-[700px]:text-xl">🐾</Emoji>}
+          </h1>
           {isHome ? (
-            <p className="dh-intro-copy">함께한 하루, 발자국 하나.<br />강아지의 방문 기록과 회원권을 한곳에서 관리해요.</p>
+            <p className="mt-4 text-base leading-[1.85] text-[#61716a] dark:text-[#b6c6bd]">
+              함께한 하루, 발자국 하나.<br />강아지의 방문 기록과 회원권을 한곳에서 관리해요.
+            </p>
           ) : (
-            <p className="dh-effective">시행일 {EFFECTIVE}</p>
+            <p className="mt-3 text-[13px] text-[#61716a] dark:text-[#b6c6bd]">시행일 {EFFECTIVE}</p>
           )}
         </div>
-        <div className="dh-content">{current.content}</div>
-        <footer className="dh-footer">
+        <div className={isHome ? "" : "pt-7 pb-10"}>{current.content}</div>
+        <footer className="flex flex-wrap justify-between gap-3 border-t border-[#e3ebe7] pt-5 pb-[26px] text-xs text-[#61716a] dark:border-[#36443c] dark:text-[#b6c6bd]">
           <span>© 2026 {APP_NAME}</span>
-          <span>매일매일, 반가운 발자국 <Emoji>🐾</Emoji></span>
+          <span>
+            매일매일, 반가운 발자국 <Emoji className="ml-1">🐾</Emoji>
+          </span>
         </footer>
       </article>
     </main>

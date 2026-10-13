@@ -5,7 +5,7 @@ export const profile = {
     "운영자가 실제로 사용하는 관리자 화면과 대화형 UI를 중심으로 프론트엔드를 개발해 왔습니다.",
   email: "305243@naver.com",
   github: "https://github.com/hasangwon",
-  blog: "https://bitcoins.tistory.com/",
+  blog: "https://bitcoins.tistory.com",
   experience: "약 4년 7개월",
 };
 
@@ -203,7 +203,6 @@ export const projects = [
           "비개발자 신규 담당자도 구조와 수정 지점을 파악할 수 있도록 정리한 공개용 인수인계 문서",
         src: "/project-images/seolhaewon/handover-thumbnail.webp",
         alt: "설해원 프론트엔드 인수인계서 썸네일",
-        docSrc: "/project-docs/seolhaewon-handover.md",
       },
     ],
   },

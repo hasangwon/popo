@@ -5,6 +5,7 @@ import {
   Section,
   SkillList,
 } from "../components/resume/ResumeBlocks";
+import { experience } from "../constants/portfolioData";
 import {
   resumeCompanies,
   resumeEducation,
@@ -72,7 +73,7 @@ const ResumePage = () => (
         <div className="mt-6">
           <MetaTable
             items={{
-              경력: resumeProfile.experience,
+              경력: experience,
               이메일: (
                 <a
                   href={`mailto:${resumeProfile.email}`}
@@ -81,7 +82,6 @@ const ResumePage = () => (
                   {resumeProfile.email}
                 </a>
               ),
-              블로그: <ResumeLink href={resumeProfile.blog} />,
               깃허브: <ResumeLink href={resumeProfile.github} />,
               포트폴리오: <ResumeLink href={resumeProfile.portfolio} />,
             }}
@@ -101,7 +101,7 @@ const ResumePage = () => (
         <SkillList items={resumeSkillGroups} />
       </Section>
 
-      <Section title={`경력 (${resumeProfile.experience})`}>
+      <Section title={`경력 (${experience})`}>
         <div className="space-y-8">
           {resumeCompanies.map((company) => (
             <section key={company.name}>
@@ -159,11 +159,18 @@ const ResumePage = () => (
       <Section title="교육">
         <div className="space-y-4">
           {resumeEducation.map((item) => (
-            <div key={item.school}>
-              <p className="font-bold text-slate-950 dark:text-slate-100">{item.school}</p>
-              <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
-                {item.period}
-              </p>
+            <div key={item.school} className="flex items-center gap-4">
+              <img
+                src={getPublicAssetUrl(item.logo)}
+                alt={`${item.school} 로고`}
+                className="h-12 w-12 shrink-0 rounded-full bg-white object-contain"
+              />
+              <div>
+                <p className="font-bold text-slate-950 dark:text-slate-100">{item.school}</p>
+                <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                  {item.period}
+                </p>
+              </div>
             </div>
           ))}
         </div>

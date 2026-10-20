@@ -205,10 +205,7 @@ export const resumeOtherProjects = [
 export const resumeEducation = [
   {
     school: "한신대학교. 컴퓨터공학부",
-    period: "2015.03 ~ 2020.02 (졸업)",
-  },
-  {
-    school: "성사고등학교. 인문계",
-    period: "2012.03 ~ 2015.02 (졸업)",
+    period: "2015.03 ~ 2021.02 (졸업)",
+    logo: "/education/hanshin.jpg",
   },
 ];

@@ -5,8 +5,6 @@ export const profile = {
     "운영자가 실제로 사용하는 관리자 화면과 대화형 UI를 중심으로 프론트엔드를 개발해 왔습니다.",
   email: "305243@naver.com",
   github: "https://github.com/hasangwon",
-  blog: "https://bitcoins.tistory.com",
-  experience: "약 4년 7개월",
 };
 
 export const sections = [
@@ -133,6 +131,22 @@ export const companies = [
     ],
   },
 ];
+
+// 회사별 재직 개월 수(시작·끝 달 포함)를 더한다. "현재"는 오늘 날짜까지.
+const today = new Date();
+
+const totalMonths = companies.reduce((sum, { period }) => {
+  const [startText, endText] = period.split(" ~ ");
+  const [startYear, startMonth] = startText.split(".").map(Number);
+  const [endYear, endMonth] =
+    endText === "현재"
+      ? [today.getFullYear(), today.getMonth() + 1]
+      : endText.split(".").map(Number);
+
+  return sum + (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+}, 0);
+
+export const experience = `${Math.floor(totalMonths / 12)}년 ${totalMonths % 12}개월`;
 
 export const projects = [
   {

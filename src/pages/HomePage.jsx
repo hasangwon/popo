@@ -51,7 +51,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] overflow-auto bg-[#fff5df] text-slate-950 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+    <main className="relative h-[100dvh] select-none overflow-auto bg-[#fff5df] text-slate-950 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_14%_18%,rgba(255,88,88,0.34),transparent_26%),radial-gradient(circle_at_84%_24%,rgba(45,212,191,0.34),transparent_25%),radial-gradient(circle_at_58%_86%,rgba(250,204,21,0.36),transparent_28%)] dark:opacity-30" />
       <div className="pointer-events-none absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(15,23,42,0.13)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,0.13)_1px,transparent_1px)] [background-size:36px_36px] dark:opacity-15 dark:[background-image:linear-gradient(rgba(226,232,240,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(226,232,240,0.16)_1px,transparent_1px)]" />
       <div className="pointer-events-none absolute inset-0">

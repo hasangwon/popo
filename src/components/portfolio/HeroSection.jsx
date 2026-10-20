@@ -1,5 +1,5 @@
 import TagList from "../common/TagList";
-import { profile } from "../../constants/portfolioData";
+import { experience, profile } from "../../constants/portfolioData";
 import PortfolioSection from "./PortfolioSection";
 
 const coreTags = [
@@ -81,7 +81,7 @@ const HeroSection = ({ active, onProjectSelect, registerSection, section }) => (
         <div className="mt-3 flex flex-wrap items-center gap-2">
           <p className="text-lg font-black text-sky-700 dark:text-sky-400">{profile.role}</p>
           <span className="rounded bg-slate-100 dark:bg-slate-800 px-2 py-1 text-xs font-black text-slate-600 dark:text-slate-400">
-            {profile.experience}
+            {experience}
           </span>
         </div>
 

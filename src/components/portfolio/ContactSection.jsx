@@ -13,12 +13,6 @@ const contactLinks = [
     href: profile.github,
     external: true,
   },
-  {
-    label: "기술 블로그",
-    value: profile.blog.replace("https://", ""),
-    href: profile.blog,
-    external: true,
-  },
 ];
 
 const ContactSection = ({ active, registerSection, section }) => (

@@ -476,6 +476,14 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
     }
   }, [setScreen]);
 
+  // 판을 버리고 시작 화면으로 (모바일 전체화면의 나가기 버튼)
+  const exitRun = useCallback(() => {
+    runRef.current = createRunState();
+    onGameReset?.();
+    setLevelChoices([]);
+    setScreen("idle");
+  }, [onGameReset, setScreen]);
+
   // ------- 메인 루프 -------
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -484,6 +492,9 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
     const context = canvas.getContext("2d", { alpha: false });
     if (!context) return undefined;
 
+    // 모바일 전체화면 전환처럼 window resize 없이 캔버스 크기가 바뀌는 경우까지 잡기 위해 캔버스 자체를 관찰
+    let viewSize = { width: 0, height: 0 };
+
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -491,6 +502,7 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      viewSize = { width: rect.width, height: rect.height };
     };
 
     const spawnParticles = (x, y, color, count, speed = 90) => {
@@ -1052,8 +1064,7 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
     };
 
     const drawGame = () => {
-      const rect = canvas.getBoundingClientRect();
-      const scale = rect.width / WORLD_SIZE;
+      const scale = viewSize.width / WORLD_SIZE;
       const run = runRef.current;
       const { player, stats } = run;
       const palette = {
@@ -1074,17 +1085,17 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
 
       // 방사형 그라데이션 배경
       const bgGradient = context.createRadialGradient(
-        rect.width / 2,
-        rect.height / 2,
-        rect.width * 0.1,
-        rect.width / 2,
-        rect.height / 2,
-        rect.width * 0.75,
+        viewSize.width / 2,
+        viewSize.height / 2,
+        viewSize.width * 0.1,
+        viewSize.width / 2,
+        viewSize.height / 2,
+        viewSize.width * 0.75,
       );
       bgGradient.addColorStop(0, palette.bgInner);
       bgGradient.addColorStop(1, palette.bgOuter);
       context.fillStyle = bgGradient;
-      context.fillRect(0, 0, rect.width, rect.height);
+      context.fillRect(0, 0, viewSize.width, viewSize.height);
 
       context.scale(scale, scale);
 
@@ -1540,16 +1551,18 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
       }
     };
 
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+
     resizeCanvas();
+    resizeObserver.observe(canvas);
     frameRef.current = requestAnimationFrame(loop);
-    window.addEventListener("resize", resizeCanvas);
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
     document.addEventListener("visibilitychange", handleVisibility);
 
     return () => {
       cancelAnimationFrame(frameRef.current);
-      window.removeEventListener("resize", resizeCanvas);
+      resizeObserver.disconnect();
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
       document.removeEventListener("visibilitychange", handleVisibility);
@@ -1616,8 +1629,11 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
     updateJoystick(event);
   };
 
+  // 모바일(coarse pointer)은 플레이 중 화면 전체를 게임에 내준다 — 캔버스와 조이스틱이 한 화면에 들어오도록
+  const isFullscreen = isCoarsePointer && screen !== "idle";
+
   const overlayClass =
-    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 bg-[#fffdf4]/95 p-6 text-center dark:bg-slate-950/95";
+    "absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-[#fffdf4]/95 p-4 text-center dark:bg-slate-950/95 @md:gap-4 @md:p-6";
   const primaryButtonClass =
     "border-[3px] border-slate-950 bg-[#facc15] px-8 py-3 text-lg font-black text-slate-950 shadow-[6px_6px_0_#0f172a] transition-transform hover:-translate-y-0.5 dark:border-slate-100 dark:shadow-[6px_6px_0_rgba(241,245,249,0.9)]";
 
@@ -1625,8 +1641,32 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
     `TIME ${formatTime(result.time)} · Lv.${result.level} · 🐛 ${result.kills} KILLS`;
 
   return (
-    <div className="w-full">
-      <div className="relative w-full overflow-hidden border-[3px] border-slate-950 bg-[#fffdf4] shadow-[8px_8px_0_#0f172a] dark:border-slate-100 dark:bg-slate-900 dark:shadow-[8px_8px_0_rgba(241,245,249,0.9)]">
+    <div
+      className={
+        isFullscreen
+          ? "fixed inset-0 z-50 flex touch-none flex-col items-center justify-center gap-5 bg-[#fff5df] p-4 dark:bg-slate-950 landscape:flex-row"
+          : "w-full"
+      }
+    >
+      {isFullscreen && (
+        <button
+          type="button"
+          onClick={exitRun}
+          className="absolute right-4 top-4 flex h-12 items-center gap-2 border-[3px] border-slate-950 bg-white px-5 text-base font-black text-slate-950 shadow-[4px_4px_0_#0f172a] dark:border-slate-100 dark:bg-slate-800 dark:text-slate-100 dark:shadow-[4px_4px_0_rgba(241,245,249,0.8)]"
+        >
+          <span aria-hidden>✕</span>
+          나가기
+        </button>
+      )}
+
+      <div
+        className={[
+          "@container relative overflow-hidden border-[3px] border-slate-950 bg-[#fffdf4] shadow-[8px_8px_0_#0f172a] dark:border-slate-100 dark:bg-slate-900 dark:shadow-[8px_8px_0_rgba(241,245,249,0.9)]",
+          isFullscreen
+            ? "w-[min(100%,calc(100dvh-15rem))] landscape:w-[min(calc(100%-10rem),calc(100dvh-2rem))]"
+            : "w-full",
+        ].join(" ")}
+      >
         <canvas
           ref={canvasRef}
           className="block aspect-square w-full touch-none"
@@ -1656,7 +1696,7 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
             <p className="text-xs font-black tracking-[0.3em] text-rose-500">
               MINI GAME
             </p>
-            <h2 className="text-3xl font-black tracking-tight text-slate-950 dark:text-slate-100 sm:text-4xl">
+            <h2 className="text-3xl font-black tracking-tight text-slate-950 dark:text-slate-100 @md:text-4xl">
               DEBUG SURVIVOR
             </h2>
             {bestRecord && (
@@ -1688,7 +1728,7 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
             <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
               강화를 선택하세요 {isCoarsePointer ? "" : "(1 / 2 / 3)"}
             </p>
-            <div className="flex w-full max-w-[440px] flex-col gap-2.5 sm:flex-row">
+            <div className="flex w-full max-w-[440px] flex-col gap-2 @md:flex-row @md:gap-2.5">
               {levelChoices.map((upgrade, index) => {
                 const rarity = RARITIES[upgrade.rarity];
 
@@ -1697,23 +1737,25 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
                     key={upgrade.id}
                     type="button"
                     onClick={() => chooseUpgrade(upgrade)}
-                    className="card-pop-in flex flex-1 flex-col items-center gap-1.5 border-[3px] border-slate-950 bg-white p-4 text-center shadow-[5px_5px_0_#0f172a] transition-transform hover:-translate-y-1 dark:border-slate-100 dark:bg-slate-900 dark:shadow-[5px_5px_0_rgba(241,245,249,0.9)]"
+                    className="card-pop-in flex flex-1 items-center gap-3 border-[3px] border-slate-950 bg-white px-3 py-2 text-left shadow-[4px_4px_0_#0f172a] transition-transform hover:-translate-y-1 dark:border-slate-100 dark:bg-slate-900 dark:shadow-[4px_4px_0_rgba(241,245,249,0.9)] @md:flex-col @md:gap-1.5 @md:p-4 @md:text-center @md:shadow-[5px_5px_0_#0f172a] dark:@md:shadow-[5px_5px_0_rgba(241,245,249,0.9)]"
                     style={{ animationDelay: `${index * 0.07}s` }}
                   >
-                    <span
-                      className="text-[0.6rem] font-black tracking-[0.2em]"
-                      style={{ color: rarity.color }}
-                    >
-                      {rarity.label}
-                    </span>
-                    <span className="text-3xl" aria-hidden>
+                    <span className="text-2xl @md:text-3xl" aria-hidden>
                       {upgrade.icon}
                     </span>
-                    <span className="text-base font-black text-slate-950 dark:text-slate-100">
-                      {upgrade.name}
-                    </span>
-                    <span className="text-xs font-bold leading-5 text-slate-500 dark:text-slate-400">
-                      {upgrade.desc}
+                    <span className="flex flex-col gap-0.5 @md:items-center @md:gap-1.5">
+                      <span
+                        className="text-[0.6rem] font-black tracking-[0.2em]"
+                        style={{ color: rarity.color }}
+                      >
+                        {rarity.label}
+                      </span>
+                      <span className="text-sm font-black text-slate-950 dark:text-slate-100 @md:text-base">
+                        {upgrade.name}
+                      </span>
+                      <span className="text-xs font-bold leading-4 text-slate-500 dark:text-slate-400 @md:leading-5">
+                        {upgrade.desc}
+                      </span>
                     </span>
                   </button>
                 );
@@ -1741,7 +1783,7 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
         {/* 게임 오버 / 클리어 */}
         {(screen === "over" || screen === "victory") && lastResult && (
           <div className={overlayClass}>
-            <h2 className="text-3xl font-black text-slate-950 dark:text-slate-100">
+            <h2 className="text-2xl font-black text-slate-950 dark:text-slate-100 @md:text-3xl">
               {screen === "victory" ? "🎉 DEPLOY SUCCESS!" : "💀 GAME OVER"}
             </h2>
 
@@ -1765,8 +1807,9 @@ const HomeRoguelite = ({ onBossEnter, onGameReset }) => {
       </div>
 
       {/* 모바일 조이스틱 */}
-      {isCoarsePointer && screen === "running" && (
-        <div className="mt-4 flex justify-center">
+      {/* 레벨업·일시정지 중에도 자리를 지켜야 누른 채 언마운트돼 이동값이 남는 일이 없다 */}
+      {isFullscreen && (
+        <div className="flex justify-center">
           <div
             className="relative flex h-28 w-28 touch-none items-center justify-center rounded-full border-[3px] border-slate-950 bg-white/80 shadow-[5px_5px_0_#0f172a] dark:border-slate-100 dark:bg-slate-800/80 dark:shadow-[5px_5px_0_rgba(241,245,249,0.8)]"
             onPointerDown={handleJoystickPointerDown}
